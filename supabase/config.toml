@@ -1,0 +1,4 @@
+project_id = "vondjfwmqgapjowdkefm"
+
+[functions.melhorar-texto]
+verify_jwt = false

@@ -1,0 +1,2972 @@
+{
+  "lei": "Lei Complementar nº 214",
+  "data_atualizacao": "2025-12-26",
+  "anexos": [
+    {
+      "anexo": "I",
+      "tipo": "Comércio",
+      "descricao": "Alíquotas e Partilha do Simples Nacional - Comércio",
+      "faixas_receita": [
+        {
+          "faixa": 1,
+          "receita_minima": 0,
+          "receita_maxima": 180000.00,
+          "descricao": "Até 180.000,00"
+        },
+        {
+          "faixa": 2,
+          "receita_minima": 180000.01,
+          "receita_maxima": 360000.00,
+          "descricao": "De 180.000,01 a 360.000,00"
+        },
+        {
+          "faixa": 3,
+          "receita_minima": 360000.01,
+          "receita_maxima": 720000.00,
+          "descricao": "De 360.000,01 a 720.000,00"
+        },
+        {
+          "faixa": 4,
+          "receita_minima": 720000.01,
+          "receita_maxima": 1800000.00,
+          "descricao": "De 720.000,01 a 1.800.000,00"
+        },
+        {
+          "faixa": 5,
+          "receita_minima": 1800000.01,
+          "receita_maxima": 3600000.00,
+          "descricao": "De 1.800.000,01 a 3.600.000,00"
+        },
+        {
+          "faixa": 6,
+          "receita_minima": 3600000.01,
+          "receita_maxima": 4800000.00,
+          "descricao": "De 3.600.000,01 a 4.800.000,00"
+        }
+      ],
+      "periodos": [
+        {
+          "ano_inicio": 2027,
+          "ano_fim": 2028,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 18.90,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.33,
+              "CPP": 41.50,
+              "ICMS": 34.00,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.33,
+              "CPP": 41.50,
+              "ICMS": 34.00,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.33,
+              "CPP": 42.00,
+              "ICMS": 33.50,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.33,
+              "CPP": 42.00,
+              "ICMS": 33.50,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.33,
+              "CPP": 42.00,
+              "ICMS": 33.50,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.58,
+              "CSLL": 10.06,
+              "CBS": 34.02,
+              "CPP": 42.34,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2029,
+          "ano_fim": 2029,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 19.00,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 30.60,
+              "IBS": 3.40
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 30.60,
+              "IBS": 3.40
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 30.15,
+              "IBS": 3.35
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 30.15,
+              "IBS": 3.35
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 30.15,
+              "IBS": 3.35
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.50,
+              "CSLL": 10.00,
+              "CBS": 34.40,
+              "CPP": 42.10,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2030,
+          "ano_fim": 2030,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 19.00,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 27.20,
+              "IBS": 6.80
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 27.20,
+              "IBS": 6.80
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 26.80,
+              "IBS": 6.70
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 26.80,
+              "IBS": 6.70
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 26.80,
+              "IBS": 6.70
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.50,
+              "CSLL": 10.00,
+              "CBS": 34.40,
+              "CPP": 42.10,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2031,
+          "ano_fim": 2031,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 19.00,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 23.80,
+              "IBS": 10.20
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 23.80,
+              "IBS": 10.20
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 23.45,
+              "IBS": 10.05
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 23.45,
+              "IBS": 10.05
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 23.45,
+              "IBS": 10.05
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.50,
+              "CSLL": 10.00,
+              "CBS": 34.40,
+              "CPP": 42.10,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2032,
+          "ano_fim": 2032,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 19.00,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 20.40,
+              "IBS": 13.60
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "ICMS": 20.40,
+              "IBS": 13.60
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 20.10,
+              "IBS": 13.40
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 20.10,
+              "IBS": 13.40
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "ICMS": 20.10,
+              "IBS": 13.40
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.50,
+              "CSLL": 10.00,
+              "CBS": 34.40,
+              "CPP": 42.10,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2033,
+          "ano_fim": null,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.30,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 9.50,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 10.70,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.30,
+              "valor_deduzir": 87300.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 19.00,
+              "valor_deduzir": 378000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "IBS": 34.00
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 41.50,
+              "IBS": 34.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "IBS": 33.50
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "IBS": 33.50
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 15.50,
+              "CPP": 42.00,
+              "IBS": 33.50
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 13.50,
+              "CSLL": 10.00,
+              "CBS": 34.40,
+              "CPP": 42.10,
+              "IBS": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anexo": "II",
+      "tipo": "Indústria",
+      "descricao": "Alíquotas e Partilha do Simples Nacional - Indústria",
+      "faixas_receita": [
+        {
+          "faixa": 1,
+          "receita_minima": 0,
+          "receita_maxima": 180000.00,
+          "descricao": "Até 180.000,00"
+        },
+        {
+          "faixa": 2,
+          "receita_minima": 180000.01,
+          "receita_maxima": 360000.00,
+          "descricao": "De 180.000,01 a 360.000,00"
+        },
+        {
+          "faixa": 3,
+          "receita_minima": 360000.01,
+          "receita_maxima": 720000.00,
+          "descricao": "De 360.000,01 a 720.000,00"
+        },
+        {
+          "faixa": 4,
+          "receita_minima": 720000.01,
+          "receita_maxima": 1800000.00,
+          "descricao": "De 720.000,01 a 1.800.000,00"
+        },
+        {
+          "faixa": 5,
+          "receita_minima": 1800000.01,
+          "receita_maxima": 3600000.00,
+          "descricao": "De 1.800.000,01 a 3.600.000,00"
+        },
+        {
+          "faixa": 6,
+          "receita_minima": 3600000.01,
+          "receita_maxima": 4800000.00,
+          "descricao": "De 3.600.000,01 a 4.800.000,00"
+        }
+      ],
+      "periodos": [
+        {
+          "ano_inicio": 2027,
+          "ano_fim": 2028,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 29.90,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 13.85,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 32.00,
+              "IBS": 0.15
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 13.85,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 32.00,
+              "IBS": 0.15
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 13.85,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 32.00,
+              "IBS": 0.15
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 13.85,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 32.00,
+              "IBS": 0.15
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 13.85,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 32.00,
+              "IBS": 0.15
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.53,
+              "CSLL": 7.53,
+              "CBS": 25.22,
+              "CPP": 23.59,
+              "IPI": 35.13,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2029,
+          "ano_fim": 2029,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.00,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.50,
+              "CSLL": 7.50,
+              "CBS": 25.50,
+              "CPP": 23.50,
+              "IPI": 35.00,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2030,
+          "ano_fim": 2030,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.00,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.50,
+              "CSLL": 7.50,
+              "CBS": 25.50,
+              "CPP": 23.50,
+              "IPI": 35.00,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2031,
+          "ano_fim": 2031,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.00,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.50,
+              "CSLL": 7.50,
+              "CBS": 25.50,
+              "CPP": 23.50,
+              "IPI": 35.00,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2032,
+          "ano_fim": 2032,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.00,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "ICMS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.50,
+              "CSLL": 7.50,
+              "CBS": 25.50,
+              "CPP": 23.50,
+              "IPI": 35.00,
+              "ICMS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2033,
+          "ano_fim": null,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 7.80,
+              "valor_deduzir": 5940.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.00,
+              "valor_deduzir": 13860.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 11.20,
+              "valor_deduzir": 22500.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 14.70,
+              "valor_deduzir": 85500.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.00,
+              "valor_deduzir": 720000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 5.50,
+              "CSLL": 3.50,
+              "CBS": 14.00,
+              "CPP": 37.50,
+              "IPI": 7.50,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 8.50,
+              "CSLL": 7.50,
+              "CBS": 25.50,
+              "CPP": 23.50,
+              "IPI": 35.00,
+              "IBS": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anexo": "III",
+      "tipo": "Serviços",
+      "descricao": "Receitas de locação de bens móveis e de prestação de serviços não relacionados no § 5º-C",
+      "faixas_receita": [
+        {
+          "faixa": 1,
+          "receita_minima": 0,
+          "receita_maxima": 180000.00,
+          "descricao": "Até 180.000,00"
+        },
+        {
+          "faixa": 2,
+          "receita_minima": 180000.01,
+          "receita_maxima": 360000.00,
+          "descricao": "De 180.000,01 a 360.000,00"
+        },
+        {
+          "faixa": 3,
+          "receita_minima": 360000.01,
+          "receita_maxima": 720000.00,
+          "descricao": "De 360.000,01 a 720.000,00"
+        },
+        {
+          "faixa": 4,
+          "receita_minima": 720000.01,
+          "receita_maxima": 1800000.00,
+          "descricao": "De 720.000,01 a 1.800.000,00"
+        },
+        {
+          "faixa": 5,
+          "receita_minima": 1800000.01,
+          "receita_maxima": 3600000.00,
+          "descricao": "De 1.800.000,01 a 3.600.000,00"
+        },
+        {
+          "faixa": 6,
+          "receita_minima": 3600000.01,
+          "receita_maxima": 4800000.00,
+          "descricao": "De 3.600.000,01 a 4.800.000,00"
+        }
+      ],
+      "observacoes": "ISS limitado a 5% efetivo. Na 5ª faixa, quando alíquota efetiva > 14,92537%, aplicam-se regras especiais de repartição.",
+      "periodos": [
+        {
+          "ano_inicio": 2027,
+          "ano_fim": 2028,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 32.90,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.43,
+              "CPP": 43.40,
+              "ISS": 33.50,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.91,
+              "CPP": 43.40,
+              "ISS": 32.00,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.42,
+              "CPP": 43.40,
+              "ISS": 32.50,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.42,
+              "CPP": 43.40,
+              "ISS": 32.50,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.43,
+              "CPP": 43.40,
+              "ISS": 33.50,
+              "IBS": 0.17
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.09,
+              "CSLL": 15.04,
+              "CBS": 19.29,
+              "CPP": 30.58,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2029,
+          "ano_fim": 2029,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 30.15,
+              "IBS": 3.35
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 17.10,
+              "CPP": 43.40,
+              "ISS": 28.80,
+              "IBS": 3.20
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 29.25,
+              "IBS": 3.25
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 29.25,
+              "IBS": 3.25
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 30.15,
+              "IBS": 3.35
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.00,
+              "CBS": 19.50,
+              "CPP": 30.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2030,
+          "ano_fim": 2030,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 26.80,
+              "IBS": 6.70
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 17.10,
+              "CPP": 43.40,
+              "ISS": 25.60,
+              "IBS": 6.40
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 26.00,
+              "IBS": 6.50
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 26.00,
+              "IBS": 6.50
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 26.80,
+              "IBS": 6.70
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.00,
+              "CBS": 19.50,
+              "CPP": 30.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2031,
+          "ano_fim": 2031,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 23.45,
+              "IBS": 10.05
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 17.10,
+              "CPP": 43.40,
+              "ISS": 22.40,
+              "IBS": 9.60
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 22.75,
+              "IBS": 9.75
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 22.75,
+              "IBS": 9.75
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 23.45,
+              "IBS": 10.05
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.00,
+              "CBS": 19.50,
+              "CPP": 30.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2032,
+          "ano_fim": 2032,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 20.10,
+              "IBS": 13.40
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 17.10,
+              "CPP": 43.40,
+              "ISS": 19.20,
+              "IBS": 12.80
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 19.50,
+              "IBS": 13.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "ISS": 19.50,
+              "IBS": 13.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "ISS": 20.10,
+              "IBS": 13.40
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.00,
+              "CBS": 19.50,
+              "CPP": 30.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2033,
+          "ano_fim": null,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 6.00,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 11.20,
+              "valor_deduzir": 9360.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 13.50,
+              "valor_deduzir": 17640.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 16.00,
+              "valor_deduzir": 35640.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 21.00,
+              "valor_deduzir": 125640.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 648000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "IBS": 33.50
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 17.10,
+              "CPP": 43.40,
+              "IBS": 32.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "IBS": 32.50
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 16.60,
+              "CPP": 43.40,
+              "IBS": 32.50
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 4.00,
+              "CSLL": 3.50,
+              "CBS": 15.60,
+              "CPP": 43.40,
+              "IBS": 33.50
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.00,
+              "CBS": 19.50,
+              "CPP": 30.50,
+              "IBS": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anexo": "IV",
+      "tipo": "Serviços",
+      "descricao": "Receitas decorrentes da prestação de serviços relacionados no § 5º-C",
+      "faixas_receita": [
+        {
+          "faixa": 1,
+          "receita_minima": 0,
+          "receita_maxima": 180000.00,
+          "descricao": "Até 180.000,00"
+        },
+        {
+          "faixa": 2,
+          "receita_minima": 180000.01,
+          "receita_maxima": 360000.00,
+          "descricao": "De 180.000,01 a 360.000,00"
+        },
+        {
+          "faixa": 3,
+          "receita_minima": 360000.01,
+          "receita_maxima": 720000.00,
+          "descricao": "De 360.000,01 a 720.000,00"
+        },
+        {
+          "faixa": 4,
+          "receita_minima": 720000.01,
+          "receita_maxima": 1800000.00,
+          "descricao": "De 720.000,01 a 1.800.000,00"
+        },
+        {
+          "faixa": 5,
+          "receita_minima": 1800000.01,
+          "receita_maxima": 3600000.00,
+          "descricao": "De 1.800.000,01 a 3.600.000,00"
+        },
+        {
+          "faixa": 6,
+          "receita_minima": 3600000.01,
+          "receita_maxima": 4800000.00,
+          "descricao": "De 3.600.000,01 a 4.800.000,00"
+        }
+      ],
+      "observacoes": "ISS limitado a 5% efetivo. Na 5ª faixa, quando alíquota efetiva > 12,5%, aplicam-se regras especiais de repartição.",
+      "periodos": [
+        {
+          "ano_inicio": 2027,
+          "ano_fim": 2028,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 32.90,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.26,
+              "ISS": 44.50,
+              "IBS": 0.24
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 24.73,
+              "ISS": 40.00,
+              "IBS": 0.27
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 23.74,
+              "ISS": 40.00,
+              "IBS": 0.26
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 22.75,
+              "ISS": 40.00,
+              "IBS": 0.25
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 21.76,
+              "ISS": 40.00,
+              "IBS": 0.24
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.71,
+              "CSLL": 21.59,
+              "CBS": 24.70,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2029,
+          "ano_fim": 2029,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.50,
+              "ISS": 40.05,
+              "IBS": 4.45
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 25.00,
+              "ISS": 36.00,
+              "IBS": 4.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 24.00,
+              "ISS": 36.00,
+              "IBS": 4.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 23.00,
+              "ISS": 36.00,
+              "IBS": 4.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 22.00,
+              "ISS": 36.00,
+              "IBS": 4.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.50,
+              "CSLL": 21.50,
+              "CBS": 25.00,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2030,
+          "ano_fim": 2030,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.50,
+              "ISS": 35.60,
+              "IBS": 8.90
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 25.00,
+              "ISS": 32.00,
+              "IBS": 8.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 24.00,
+              "ISS": 32.00,
+              "IBS": 8.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 23.00,
+              "ISS": 32.00,
+              "IBS": 8.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 22.00,
+              "ISS": 32.00,
+              "IBS": 8.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.50,
+              "CSLL": 21.50,
+              "CBS": 25.00,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2031,
+          "ano_fim": 2031,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.50,
+              "ISS": 31.15,
+              "IBS": 13.35
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 25.00,
+              "ISS": 28.00,
+              "IBS": 12.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 24.00,
+              "ISS": 28.00,
+              "IBS": 12.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 23.00,
+              "ISS": 28.00,
+              "IBS": 12.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 22.00,
+              "ISS": 28.00,
+              "IBS": 12.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.50,
+              "CSLL": 21.50,
+              "CBS": 25.00,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2032,
+          "ano_fim": 2032,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.50,
+              "ISS": 26.70,
+              "IBS": 17.80
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 25.00,
+              "ISS": 24.00,
+              "IBS": 16.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 24.00,
+              "ISS": 24.00,
+              "IBS": 16.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 23.00,
+              "ISS": 24.00,
+              "IBS": 16.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 22.00,
+              "ISS": 24.00,
+              "IBS": 16.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.50,
+              "CSLL": 21.50,
+              "CBS": 25.00,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2033,
+          "ano_fim": null,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 4.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 9.00,
+              "valor_deduzir": 8100.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 10.20,
+              "valor_deduzir": 12420.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 14.00,
+              "valor_deduzir": 39780.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 22.00,
+              "valor_deduzir": 183780.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 33.00,
+              "valor_deduzir": 828000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 18.80,
+              "CSLL": 15.20,
+              "CBS": 21.50,
+              "IBS": 44.50
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 19.80,
+              "CSLL": 15.20,
+              "CBS": 25.00,
+              "IBS": 40.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 20.80,
+              "CSLL": 15.20,
+              "CBS": 24.00,
+              "IBS": 40.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 17.80,
+              "CSLL": 19.20,
+              "CBS": 23.00,
+              "IBS": 40.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 18.80,
+              "CSLL": 19.20,
+              "CBS": 22.00,
+              "IBS": 40.00
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 53.50,
+              "CSLL": 21.50,
+              "CBS": 25.00,
+              "IBS": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anexo": "V",
+      "tipo": "Serviços",
+      "descricao": "Receitas decorrentes da prestação de serviços relacionados no § 5º-I",
+      "faixas_receita": [
+        {
+          "faixa": 1,
+          "receita_minima": 0,
+          "receita_maxima": 180000.00,
+          "descricao": "Até 180.000,00"
+        },
+        {
+          "faixa": 2,
+          "receita_minima": 180000.01,
+          "receita_maxima": 360000.00,
+          "descricao": "De 180.000,01 a 360.000,00"
+        },
+        {
+          "faixa": 3,
+          "receita_minima": 360000.01,
+          "receita_maxima": 720000.00,
+          "descricao": "De 360.000,01 a 720.000,00"
+        },
+        {
+          "faixa": 4,
+          "receita_minima": 720000.01,
+          "receita_maxima": 1800000.00,
+          "descricao": "De 720.000,01 a 1.800.000,00"
+        },
+        {
+          "faixa": 5,
+          "receita_minima": 1800000.01,
+          "receita_maxima": 3600000.00,
+          "descricao": "De 1.800.000,01 a 3.600.000,00"
+        },
+        {
+          "faixa": 6,
+          "receita_minima": 3600000.01,
+          "receita_maxima": 4800000.00,
+          "descricao": "De 3.600.000,01 a 4.800.000,00"
+        }
+      ],
+      "periodos": [
+        {
+          "ano_inicio": 2027,
+          "ano_fim": 2028,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.40,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 16.96,
+              "CPP": 28.85,
+              "ISS": 14.00,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 16.96,
+              "CPP": 27.85,
+              "ISS": 17.00,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 17.95,
+              "CPP": 23.85,
+              "ISS": 19.00,
+              "IBS": 0.20
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 18.94,
+              "CPP": 23.85,
+              "ISS": 21.00,
+              "IBS": 0.21
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 16.96,
+              "CPP": 23.85,
+              "ISS": 23.50,
+              "IBS": 0.19
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.10,
+              "CSLL": 15.54,
+              "CBS": 19.78,
+              "CPP": 29.58,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2029,
+          "ano_fim": 2029,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.50,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 28.85,
+              "ISS": 12.60,
+              "IBS": 1.40
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 27.85,
+              "ISS": 15.30,
+              "IBS": 1.70
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 18.15,
+              "CPP": 23.85,
+              "ISS": 17.10,
+              "IBS": 1.90
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 19.15,
+              "CPP": 23.85,
+              "ISS": 18.90,
+              "IBS": 2.10
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 17.15,
+              "CPP": 23.85,
+              "ISS": 21.15,
+              "IBS": 2.35
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.50,
+              "CBS": 20.00,
+              "CPP": 29.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2030,
+          "ano_fim": 2030,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.50,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 28.85,
+              "ISS": 11.20,
+              "IBS": 2.80
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 27.85,
+              "ISS": 13.60,
+              "IBS": 3.40
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 18.15,
+              "CPP": 23.85,
+              "ISS": 15.20,
+              "IBS": 3.80
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 19.15,
+              "CPP": 23.85,
+              "ISS": 16.80,
+              "IBS": 4.20
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 17.15,
+              "CPP": 23.85,
+              "ISS": 18.80,
+              "IBS": 4.70
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.50,
+              "CBS": 20.00,
+              "CPP": 29.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2031,
+          "ano_fim": 2031,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.50,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 28.85,
+              "ISS": 9.80,
+              "IBS": 4.20
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 27.85,
+              "ISS": 11.90,
+              "IBS": 5.10
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 18.15,
+              "CPP": 23.85,
+              "ISS": 13.30,
+              "IBS": 5.70
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 19.15,
+              "CPP": 23.85,
+              "ISS": 14.70,
+              "IBS": 6.30
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 17.15,
+              "CPP": 23.85,
+              "ISS": 16.45,
+              "IBS": 7.05
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.50,
+              "CBS": 20.00,
+              "CPP": 29.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2032,
+          "ano_fim": 2032,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.50,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 28.85,
+              "ISS": 8.40,
+              "IBS": 5.60
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 27.85,
+              "ISS": 10.20,
+              "IBS": 6.80
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 18.15,
+              "CPP": 23.85,
+              "ISS": 11.40,
+              "IBS": 7.60
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 19.15,
+              "CPP": 23.85,
+              "ISS": 12.60,
+              "IBS": 8.40
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 17.15,
+              "CPP": 23.85,
+              "ISS": 14.10,
+              "IBS": 9.40
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.50,
+              "CBS": 20.00,
+              "CPP": 29.50,
+              "ISS": null,
+              "IBS": null
+            }
+          ]
+        },
+        {
+          "ano_inicio": 2033,
+          "ano_fim": null,
+          "aliquotas": [
+            {
+              "faixa": 1,
+              "aliquota": 15.50,
+              "valor_deduzir": 0
+            },
+            {
+              "faixa": 2,
+              "aliquota": 18.00,
+              "valor_deduzir": 4500.00
+            },
+            {
+              "faixa": 3,
+              "aliquota": 19.50,
+              "valor_deduzir": 9900.00
+            },
+            {
+              "faixa": 4,
+              "aliquota": 20.50,
+              "valor_deduzir": 17100.00
+            },
+            {
+              "faixa": 5,
+              "aliquota": 23.00,
+              "valor_deduzir": 62100.00
+            },
+            {
+              "faixa": 6,
+              "aliquota": 30.50,
+              "valor_deduzir": 540000.00
+            }
+          ],
+          "reparticao": [
+            {
+              "faixa": 1,
+              "IRPJ": 25.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 28.85,
+              "IBS": 14.00
+            },
+            {
+              "faixa": 2,
+              "IRPJ": 23.00,
+              "CSLL": 15.00,
+              "CBS": 17.15,
+              "CPP": 27.85,
+              "IBS": 17.00
+            },
+            {
+              "faixa": 3,
+              "IRPJ": 24.00,
+              "CSLL": 15.00,
+              "CBS": 18.15,
+              "CPP": 23.85,
+              "IBS": 19.00
+            },
+            {
+              "faixa": 4,
+              "IRPJ": 21.00,
+              "CSLL": 15.00,
+              "CBS": 19.15,
+              "CPP": 23.85,
+              "IBS": 21.00
+            },
+            {
+              "faixa": 5,
+              "IRPJ": 23.00,
+              "CSLL": 12.50,
+              "CBS": 17.15,
+              "CPP": 23.85,
+              "IBS": 23.50
+            },
+            {
+              "faixa": 6,
+              "IRPJ": 35.00,
+              "CSLL": 15.50,
+              "CBS": 20.00,
+              "CPP": 29.50,
+              "IBS": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observacoes_gerais": [
+    "Todos os valores monetários estão em Reais (R$)",
+    "Transição gradual do ICMS para IBS entre 2029 e 2033",
+    "Transição gradual do ISS para IBS entre 2029 e 2033",
+    "A partir de 2033, ICMS e ISS são extintos, permanecendo apenas IBS",
+    "Percentuais de repartição representam a divisão da alíquota total entre os tributos",
+    "Faixas de receita são cumulativas nos últimos 12 meses",
+    "Cálculo do tributo: (Receita Bruta x Alíquota) - Valor a Deduzir"
+  ]
+}

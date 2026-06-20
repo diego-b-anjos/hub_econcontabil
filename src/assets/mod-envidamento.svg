@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240">
+    <rect width="400" height="240" fill="#2A2520"/>
+    <rect x="0" y="0" width="400" height="4" fill="#F7B831"/>
+    <text x="200" y="130" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#F7B831" text-anchor="middle">Envidamento</text>
+    <text x="200" y="158" font-family="Inter, sans-serif" font-size="13" fill="#ffffff80" text-anchor="middle">ECON Escritório Contábil</text>
+  </svg>
