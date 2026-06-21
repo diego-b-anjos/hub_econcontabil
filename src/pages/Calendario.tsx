@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight, Info, ExternalLink, Scale, Database, Plug, FileDown, CheckSquare, Square, KanbanSquare } from "lucide-react";
+import {
+  ChevronLeft, ChevronRight, Info, ExternalLink, Scale, Database,
+  Plug, FileDown, CheckSquare, Square, X, RotateCcw,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { useTaskStore } from "@/store/taskStore";
+import { useTaskStore, type Task } from "@/store/taskStore";
 import {
   obrigacoesDoMes,
   obrigacoesParaCliente,
@@ -19,11 +21,19 @@ import { useSelectedClients } from "@/contexts/SelectedClientsContext";
 import { ActiveClientFilterChip } from "@/components/ActiveClientFilterChip";
 import { ExportarCalendarioDialog } from "@/components/ExportarCalendarioDialog";
 
-const TIPO_CONFIG: Record<Esfera, { label: string; color: string; bg: string }> = {
-  federal:     { label: "Federal",     color: "text-blue-700",   bg: "bg-blue-50 border-blue-200" },
-  estadual:    { label: "Estadual",    color: "text-purple-700", bg: "bg-purple-50 border-purple-200" },
-  municipal:   { label: "Municipal",   color: "text-green-700",  bg: "bg-green-50 border-green-200" },
-  trabalhista: { label: "Trabalhista", color: "text-orange-700", bg: "bg-orange-50 border-orange-200" },
+// ── Constantes ──────────────────────────────────────────────────────────────
+
+const TIPO_CONFIG: Record<Esfera, { label: string; dot: string; chip: string; border: string }> = {
+  federal:     { label: "Federal",     dot: "bg-blue-500",   chip: "bg-blue-100 text-blue-800",     border: "border-blue-300"   },
+  estadual:    { label: "Estadual",    dot: "bg-purple-500", chip: "bg-purple-100 text-purple-800", border: "border-purple-300" },
+  municipal:   { label: "Municipal",   dot: "bg-green-500",  chip: "bg-green-100 text-green-800",   border: "border-green-300"  },
+  trabalhista: { label: "Trabalhista", dot: "bg-orange-500", chip: "bg-orange-100 text-orange-800", border: "border-orange-300" },
+};
+
+const PRIORITY_CHIP: Record<string, string> = {
+  baixa: "bg-zinc-100 text-zinc-700",
+  media: "bg-yellow-100 text-yellow-800",
+  alta:  "bg-red-100 text-red-700",
 };
 
 const MES_NOMES = [
@@ -31,23 +41,175 @@ const MES_NOMES = [
   "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro",
 ];
 
+const DIAS_SEMANA = ["Dom","Seg","Ter","Qua","Qui","Sex","Sáb"];
+
 const REGIME_LABEL: Record<string, RegimeAplicavel> = {
-  SN: "Simples Nacional",
-  LP: "Lucro Presumido",
-  LR: "Lucro Real",
-  MEI: "MEI",
+  SN: "Simples Nacional", LP: "Lucro Presumido", LR: "Lucro Real", MEI: "MEI",
 };
 
 const MUNICIPIOS_DISPONIVEIS = [
-  "Todos",
-  "São Paulo/SP",
-  "Osasco/SP",
-  "Barueri/SP",
-  "Santana de Parnaíba/SP",
-  "Cotia/SP",
-  "Santo André/SP",
-  "São Bernardo do Campo/SP",
+  "Todos","São Paulo/SP","Osasco/SP","Barueri/SP",
+  "Santana de Parnaíba/SP","Cotia/SP","Santo André/SP","São Bernardo do Campo/SP",
 ];
+
+const RECURRENCE_LABEL: Record<string, string> = {
+  none: "Esporádica", daily: "Diária", weekly: "Semanal", monthly: "Mensal",
+};
+
+// ── Painel lateral de detalhes do dia ────────────────────────────────────────
+
+interface DaySelection {
+  day: number;
+  obrigacoes: Obrigacao[];
+  tasks: Task[];
+}
+
+function DayPanel({ sel, ano, mes, onClose, onToggleTask }: {
+  sel: DaySelection;
+  ano: number;
+  mes: number;
+  onClose: () => void;
+  onToggleTask: (id: string, isDone: boolean) => void;
+}) {
+  const date = new Date(ano, mes - 1, sel.day);
+  const label = date.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" });
+
+  return (
+    <div className="w-80 shrink-0 border-l bg-card flex flex-col h-full overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-3 border-b">
+        <div>
+          <p className="text-xs text-muted-foreground capitalize">{label}</p>
+          <p className="font-bold text-lg">{sel.day} de {MES_NOMES[mes - 1]}</p>
+        </div>
+        <Button size="icon" variant="ghost" onClick={onClose} className="h-7 w-7">
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-5">
+        {/* Obrigações */}
+        {sel.obrigacoes.length > 0 && (
+          <section className="space-y-2">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Obrigações fiscais ({sel.obrigacoes.length})
+            </p>
+            {sel.obrigacoes.map((o) => {
+              const cfg = TIPO_CONFIG[o.tipo];
+              const tributos = o.tributoIds.map((tid) => TRIBUTOS[tid]).filter(Boolean);
+              const fontes = Array.from(
+                new Set(o.tributoIds.flatMap((tid) => fontesPorTributo(tid).map((f) => f.nome))),
+              );
+              return (
+                <div key={o.id} className={cn("rounded-lg border p-3 space-y-1.5", cfg.border, "bg-card")}>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-semibold text-sm leading-snug">{o.nome}</p>
+                    <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0", cfg.chip)}>
+                      {cfg.label}
+                    </span>
+                  </div>
+                  {o.ente && <p className="text-xs text-muted-foreground">{o.ente}</p>}
+                  <p className="text-xs text-muted-foreground">{o.descricao}</p>
+                  {tributos.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {tributos.map((t) => (
+                        <Badge key={t.id} variant="outline" className="text-[10px] h-4">{t.sigla}</Badge>
+                      ))}
+                    </div>
+                  )}
+                  {o.embasamento && (
+                    <div className="rounded bg-muted/50 p-2 text-xs">
+                      <span className="flex items-center gap-1 text-muted-foreground font-medium mb-0.5">
+                        <Scale className="w-3 h-3" /> Embasamento
+                      </span>
+                      {o.embasamento}
+                    </div>
+                  )}
+                  {fontes.length > 0 && (
+                    <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <Plug className="w-3 h-3" /> {fontes.join(" · ")}
+                    </p>
+                  )}
+                  {o.regimes && o.regimes.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {o.regimes.map((r) => (
+                        <Badge key={r} variant="secondary" className="text-[9px] h-4">{r}</Badge>
+                      ))}
+                    </div>
+                  )}
+                  {o.regraVencimento && (
+                    <p className="text-[10px] text-muted-foreground italic">{o.regraVencimento}</p>
+                  )}
+                </div>
+              );
+            })}
+          </section>
+        )}
+
+        {/* Tarefas */}
+        {sel.tasks.length > 0 && (
+          <section className="space-y-2">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              Tarefas ({sel.tasks.length})
+            </p>
+            {sel.tasks.map((t) => {
+              const isDone = t.column === "done";
+              return (
+                <div
+                  key={t.id}
+                  onClick={() => onToggleTask(t.id, isDone)}
+                  className={cn(
+                    "rounded-lg border p-3 cursor-pointer transition-colors space-y-1",
+                    isDone ? "bg-green-50 border-green-200 opacity-70" : "hover:bg-muted/40 border-border",
+                  )}
+                >
+                  <div className="flex items-start gap-2">
+                    {isDone
+                      ? <CheckSquare className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
+                      : <Square className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />}
+                    <div className="flex-1 min-w-0">
+                      <p className={cn("text-sm font-medium leading-snug", isDone && "line-through text-muted-foreground")}>
+                        {t.title}
+                      </p>
+                      {t.description && (
+                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{t.description}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-wrap pl-6">
+                    <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-full", PRIORITY_CHIP[t.priority])}>
+                      {t.priority === "baixa" ? "Baixa" : t.priority === "media" ? "Média" : "Alta"}
+                    </span>
+                    {t.recurrence !== "none" && (
+                      <span className="flex items-center gap-0.5 text-[10px] text-blue-600 bg-blue-50 rounded-full px-2 py-0.5">
+                        <RotateCcw className="w-2.5 h-2.5" /> {RECURRENCE_LABEL[t.recurrence]}
+                      </span>
+                    )}
+                    {t.tag && (
+                      <span className="text-[10px] text-muted-foreground bg-muted rounded-full px-2 py-0.5">{t.tag}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        )}
+
+        {sel.obrigacoes.length === 0 && sel.tasks.length === 0 && (
+          <p className="text-sm text-muted-foreground text-center py-8">Nenhum evento neste dia.</p>
+        )}
+      </div>
+
+      <div className="p-3 border-t">
+        <p className="text-[10px] text-muted-foreground text-center">
+          Clique em uma tarefa para marcar/desmarcar como concluída
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ── Componente principal ─────────────────────────────────────────────────────
 
 const Calendario = () => {
   const agora = new Date();
@@ -59,8 +221,8 @@ const Calendario = () => {
   const { selectedIds } = useSelectedClients();
   const [clienteId, setClienteId] = useState<string>("_none");
   const [clientes, setClientes] = useState<Client[]>([]);
-  const [selected, setSelected] = useState<Obrigacao | null>(null);
   const [exportOpen, setExportOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<DaySelection | null>(null);
   const { tasks, updateTask } = useTaskStore();
 
   function mesAnterior() {
@@ -73,12 +235,9 @@ const Calendario = () => {
   }
 
   useEffect(() => {
-    apiClients.list().then(setClientes).catch(() => {
-      // silencioso — calendário funciona sem clientes
-    });
+    apiClients.list().then(setClientes).catch(() => {});
   }, []);
 
-  // Pré-seleciona automaticamente o primeiro cliente do filtro global do header
   useEffect(() => {
     if (!clientes.length) return;
     if (selectedIds.length > 0) {
@@ -87,7 +246,6 @@ const Calendario = () => {
     } else if (clienteId !== "_none") {
       setClienteId("_none");
     }
-    // só reage a mudanças do filtro global / lista de clientes
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIds, clientes]);
 
@@ -96,7 +254,6 @@ const Calendario = () => {
     [clientes, clienteId],
   );
 
-  // Quando seleciona um cliente, alinha os filtros visuais ao perfil dele
   useEffect(() => {
     if (!clienteSelecionado) return;
     if (clienteSelecionado.municipio && clienteSelecionado.uf) {
@@ -106,7 +263,6 @@ const Calendario = () => {
     if (clienteSelecionado.taxRegime) setRegimeFiltro(clienteSelecionado.taxRegime);
   }, [clienteSelecionado]);
 
-  // Quando há cliente, usamos a função inteligente; senão o fluxo manual de filtros
   const obrigacoesBase = useMemo<Obrigacao[]>(() => {
     if (clienteSelecionado) {
       return obrigacoesParaCliente(mes, {
@@ -119,9 +275,7 @@ const Calendario = () => {
   }, [mes, clienteSelecionado]);
 
   const filtradas = useMemo(() => {
-    let out = tipoFiltro === "todos"
-      ? obrigacoesBase
-      : obrigacoesBase.filter((o) => o.tipo === tipoFiltro);
+    let out = tipoFiltro === "todos" ? obrigacoesBase : obrigacoesBase.filter((o) => o.tipo === tipoFiltro);
     if (municipioFiltro !== "Todos" && !clienteSelecionado) {
       out = out.filter((o) => o.tipo !== "municipal" || o.ente === municipioFiltro);
     }
@@ -129,52 +283,70 @@ const Calendario = () => {
       const label = REGIME_LABEL[regimeFiltro];
       out = out.filter((o) => !o.regimes || !o.regimes.length || (label && o.regimes.includes(label)));
     }
-    return [...out].sort((a, b) => a.dia - b.dia || a.nome.localeCompare(b.nome));
+    return out;
   }, [obrigacoesBase, tipoFiltro, municipioFiltro, regimeFiltro, clienteSelecionado]);
 
-  const vencendoHoje = filtradas.filter((o) => {
-    const d = new Date(ano, mes - 1, o.dia);
-    return d.getFullYear() === agora.getFullYear() &&
-           d.getMonth() === agora.getMonth() &&
-           d.getDate() === agora.getDate();
-  });
+  // Tarefas do mês visível
+  const mesStr = `${ano}-${String(mes).padStart(2, "0")}`;
+  const tarefasMes = tasks.filter((t) => t.dueDate && t.dueDate.startsWith(mesStr));
 
-  // Próximas 7 dias — considera cruzamento de virada de mês corretamente
-  const proximas7 = (() => {
-    const amanha = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1);
-    const limite = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 7, 23, 59, 59);
-
-    const doCurrent = filtradas.filter((o) => {
-      const d = new Date(ano, mes - 1, o.dia);
-      return d >= amanha && d <= limite;
+  // Indexar obrigações e tarefas por dia
+  const obByDay = useMemo(() => {
+    const map: Record<number, Obrigacao[]> = {};
+    filtradas.forEach((o) => {
+      if (!map[o.dia]) map[o.dia] = [];
+      map[o.dia].push(o);
     });
+    return map;
+  }, [filtradas]);
 
-    // Se o limite entra no mês seguinte, busca obrigações desse mês também
-    if (limite.getMonth() !== amanha.getMonth() || limite.getFullYear() !== amanha.getFullYear()) {
-      const nextMes = mes === 12 ? 1 : mes + 1;
-      const nextAno = mes === 12 ? ano + 1 : ano;
-      const nextBase = clienteSelecionado
-        ? obrigacoesParaCliente(nextMes, {
-            municipio: clienteSelecionado.municipio,
-            uf: clienteSelecionado.uf,
-            taxRegime: clienteSelecionado.taxRegime,
-          })
-        : obrigacoesDoMes(nextMes);
-      const nextFilt = tipoFiltro === "todos"
-        ? nextBase
-        : nextBase.filter((o) => o.tipo === tipoFiltro);
-      const doNext = nextFilt.filter((o) => {
-        const d = new Date(nextAno, nextMes - 1, o.dia);
-        return d >= amanha && d <= limite;
+  const taskByDay = useMemo(() => {
+    const map: Record<number, Task[]> = {};
+    tarefasMes.forEach((t) => {
+      const day = parseInt(t.dueDate!.slice(8, 10), 10);
+      if (!map[day]) map[day] = [];
+      map[day].push(t);
+    });
+    return map;
+  }, [tarefasMes]);
+
+  // Grade mensal
+  const firstDayOfMonth = new Date(ano, mes - 1, 1).getDay(); // 0=Dom
+  const daysInMonth = new Date(ano, mes, 0).getDate();
+  const cells: (number | null)[] = [
+    ...Array(firstDayOfMonth).fill(null),
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
+  ];
+  // Pad to full weeks
+  while (cells.length % 7 !== 0) cells.push(null);
+
+  const today = agora.getDate();
+  const isCurrentMonth = agora.getMonth() + 1 === mes && agora.getFullYear() === ano;
+
+  function openDay(day: number) {
+    setSelectedDay({
+      day,
+      obrigacoes: obByDay[day] ?? [],
+      tasks: taskByDay[day] ?? [],
+    });
+  }
+
+  function onToggleTask(id: string, isDone: boolean) {
+    updateTask(id, { column: isDone ? "doing" : "done" });
+    // refresh panel
+    if (selectedDay) {
+      setSelectedDay((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          tasks: prev.tasks.map((t) =>
+            t.id === id ? { ...t, column: isDone ? "doing" : "done" } : t
+          ),
+        };
       });
-      return [...doCurrent, ...doNext];
     }
+  }
 
-    return doCurrent;
-  })();
-
-  /** Universo de obrigações para o diálogo de exportação — respeita
-   *  cliente (se houver) ou os filtros visuais atuais (regime/município/esfera). */
   const universoExport = (m: number): Obrigacao[] => {
     const base = clienteSelecionado
       ? obrigacoesParaCliente(m, {
@@ -195,20 +367,55 @@ const Calendario = () => {
   };
 
   return (
-    <div className="space-y-6 p-6">
-      <ActiveClientFilterChip />
-      <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div>
-          <h1 className="text-2xl font-bold">Calendário de Obrigações Fiscais</h1>
-          <p className="text-muted-foreground mt-1">
-            Prazos federais, estaduais (SP) e municipais (região) com embasamento legal,
-            tributos vinculados e fonte dos dados no Hub.
-          </p>
+    <div className="flex flex-col gap-0 h-full -m-6">
+      {/* Header */}
+      <div className="px-6 pt-6 pb-4 space-y-4 shrink-0">
+        <ActiveClientFilterChip />
+
+        <div className="flex items-center justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="text-2xl font-bold">Calendário</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              Obrigações fiscais e tarefas do escritório
+            </p>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Filtros de tipo */}
+            {(["todos","federal","estadual","municipal","trabalhista"] as const).map((t) => (
+              <Button
+                key={t}
+                variant={tipoFiltro === t ? "default" : "outline"}
+                size="sm"
+                onClick={() => setTipoFiltro(t)}
+                className="capitalize text-xs h-7 px-2"
+              >
+                {t === "todos" ? "Todos" : TIPO_CONFIG[t]?.label}
+              </Button>
+            ))}
+            <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={() => setExportOpen(true)}>
+              <FileDown className="h-3.5 w-3.5 mr-1" /> Exportar
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setExportOpen(true)}>
-            <FileDown className="h-4 w-4 mr-1.5" /> Exportar calendário
-          </Button>
+
+        {/* Filtros regime + município */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-medium text-muted-foreground">Regime:</span>
+          {(["todos","SN","LP","LR"] as const).map((r) => (
+            <Button key={r} variant={regimeFiltro === r ? "default" : "outline"} size="sm"
+              onClick={() => setRegimeFiltro(r)} disabled={!!clienteSelecionado}
+              className="text-[11px] h-6 px-2">
+              {r === "todos" ? "Todos" : REGIME_LABEL[r]}
+            </Button>
+          ))}
+          <span className="text-xs font-medium text-muted-foreground ml-2">Município:</span>
+          {MUNICIPIOS_DISPONIVEIS.map((m) => (
+            <Button key={m} variant={municipioFiltro === m ? "default" : "outline"} size="sm"
+              onClick={() => setMunicipioFiltro(m)} disabled={!!clienteSelecionado}
+              className="text-[11px] h-6 px-2">
+              {m}
+            </Button>
+          ))}
         </div>
       </div>
 
@@ -226,304 +433,164 @@ const Calendario = () => {
         modoInicial="apenas_obrigacoes"
         fileBase={clienteSelecionado
           ? `calendario-${clienteSelecionado.name.replace(/\s+/g, "_").toLowerCase()}`
-          : `calendario`}
+          : "calendario"}
       />
 
-      {/* Alertas do dia */}
-      {vencendoHoje.length > 0 && (
-        <div className="rounded-xl border border-orange-200 bg-orange-50 p-4">
-          <p className="font-semibold text-orange-800 flex items-center gap-2">
-            <Info className="h-4 w-4" />
-            {vencendoHoje.length} obrigação(ões) vencem HOJE ({agora.toLocaleDateString("pt-BR")})
-          </p>
-          <ul className="mt-2 space-y-1">
-            {vencendoHoje.map((o) => (
-              <li key={o.id} className="text-sm text-orange-700 font-medium">• {o.nome}: {o.descricao}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {proximas7.length > 0 && vencendoHoje.length === 0 && (
-        <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4">
-          <p className="font-semibold text-yellow-800 flex items-center gap-2">
-            <Info className="h-4 w-4" />
-            {proximas7.length} obrigação(ões) vencem nos próximos 7 dias
-          </p>
-          <ul className="mt-2 space-y-1">
-            {proximas7.map((o) => (
-              <li key={o.id} className="text-sm text-yellow-700">
-                • Dia {o.dia}: <span className="font-medium">{o.nome}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Navegação de mês */}
-      <Card>
-        <CardHeader className="pb-4 space-y-3">
-          <div className="flex items-center justify-between flex-wrap gap-3">
+      {/* Calendário + painel lateral */}
+      <div className="flex flex-1 min-h-0 overflow-hidden border-t">
+        {/* Grade */}
+        <div className="flex-1 flex flex-col min-w-0 overflow-auto">
+          {/* Navegação de mês */}
+          <div className="flex items-center justify-between px-6 py-3 border-b bg-card shrink-0">
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="icon" onClick={mesAnterior}>
+              <Button variant="outline" size="icon" className="h-8 w-8" onClick={mesAnterior}>
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <CardTitle className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-primary" />
-                {MES_NOMES[mes - 1]} <span className="text-muted-foreground font-normal text-base">{ano}</span>
-              </CardTitle>
-              <Button variant="outline" size="icon" onClick={proximoMes}>
+              <h2 className="text-lg font-bold min-w-[200px] text-center">
+                {MES_NOMES[mes - 1]} <span className="font-normal text-muted-foreground">{ano}</span>
+              </h2>
+              <Button variant="outline" size="icon" className="h-8 w-8" onClick={proximoMes}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {(["todos","federal","estadual","municipal","trabalhista"] as const).map((t) => (
-                <Button
-                  key={t}
-                  variant={tipoFiltro === t ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setTipoFiltro(t)}
-                  className="capitalize"
-                >
-                  {t === "todos" ? "Todos" : TIPO_CONFIG[t]?.label}
+              {!isCurrentMonth && (
+                <Button variant="ghost" size="sm" className="text-xs h-7"
+                  onClick={() => { setMes(agora.getMonth() + 1); setAno(agora.getFullYear()); }}>
+                  Hoje
                 </Button>
+              )}
+            </div>
+
+            {/* Legenda */}
+            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              {Object.entries(TIPO_CONFIG).map(([key, cfg]) => (
+                <span key={key} className="flex items-center gap-1">
+                  <span className={cn("w-2 h-2 rounded-full", cfg.dot)} />
+                  {cfg.label}
+                </span>
               ))}
+              <span className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-violet-500" />
+                Tarefa
+              </span>
             </div>
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-medium text-muted-foreground">Regime:</span>
-            {(["todos", "SN", "LP", "LR"] as const).map((r) => (
-              <Button
-                key={r}
-                variant={regimeFiltro === r ? "default" : "outline"}
-                size="sm"
-                onClick={() => setRegimeFiltro(r)}
-                disabled={!!clienteSelecionado}
-                className="text-[11px] h-7 px-2"
-              >
-                {r === "todos" ? "Todos" : REGIME_LABEL[r]}
-              </Button>
+
+          {/* Cabeçalho dias da semana */}
+          <div className="grid grid-cols-7 border-b shrink-0">
+            {DIAS_SEMANA.map((d) => (
+              <div key={d} className="py-2 text-center text-xs font-semibold text-muted-foreground border-r last:border-r-0">
+                {d}
+              </div>
             ))}
           </div>
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-medium text-muted-foreground">Município:</span>
-            {MUNICIPIOS_DISPONIVEIS.map((m) => (
-              <Button
-                key={m}
-                variant={municipioFiltro === m ? "default" : "outline"}
-                size="sm"
-                onClick={() => setMunicipioFiltro(m)}
-                disabled={!!clienteSelecionado}
-                className="text-[11px] h-7 px-2"
-              >
-                {m}
-              </Button>
-            ))}
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {filtradas.length === 0 && (
-            <p className="text-muted-foreground text-sm py-8 text-center">
-              Nenhuma obrigação encontrada para este filtro.
-            </p>
-          )}
-          {filtradas.map((o) => {
-            const cfg = TIPO_CONFIG[o.tipo];
-            const dOblg = new Date(ano, mes - 1, o.dia);
-            const isHoje = dOblg.getFullYear() === agora.getFullYear() && dOblg.getMonth() === agora.getMonth() && dOblg.getDate() === agora.getDate();
-            const isProxima = (() => { const am = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 1); const lim = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate() + 7, 23, 59, 59); return dOblg >= am && dOblg <= lim; })();
-            const isOpen = selected?.id === o.id;
-            const tributos = o.tributoIds.map((tid) => TRIBUTOS[tid]).filter(Boolean);
-            const fontes = Array.from(
-              new Set(o.tributoIds.flatMap((tid) => fontesPorTributo(tid).map((f) => f.nome))),
-            );
-            return (
-              <button
-                key={o.id}
-                onClick={() => setSelected(isOpen ? null : o)}
-                className={cn(
-                  "w-full text-left rounded-xl border p-4 transition-all hover:shadow-sm",
-                  cfg.bg,
-                  isHoje && "ring-2 ring-orange-500",
-                  isProxima && !isHoje && "ring-1 ring-yellow-400",
-                )}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-start gap-3 min-w-0 flex-1">
-                    <div className={cn(
-                      "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg font-bold text-lg",
-                      isHoje ? "bg-orange-500 text-white" : isProxima ? "bg-yellow-400 text-yellow-900" : "bg-white",
-                      cfg.color,
+
+          {/* Células dos dias */}
+          <div className="grid grid-cols-7 flex-1" style={{ gridAutoRows: "minmax(110px, 1fr)" }}>
+            {cells.map((day, idx) => {
+              if (!day) {
+                return <div key={`empty-${idx}`} className="border-b border-r last:border-r-0 bg-muted/20" />;
+              }
+
+              const obs   = obByDay[day] ?? [];
+              const tasks = taskByDay[day] ?? [];
+              const isToday      = isCurrentMonth && day === today;
+              const isSelected   = selectedDay?.day === day;
+              const hasObs       = obs.length > 0;
+              const hasTasks     = tasks.length > 0;
+              const MAX_VISIBLE  = 3;
+
+              // Chips a mostrar: obrigações primeiro, depois tarefas
+              const allItems: Array<{ label: string; cls: string; done?: boolean }> = [
+                ...obs.map((o) => ({ label: o.nome, cls: TIPO_CONFIG[o.tipo].chip })),
+                ...tasks.map((t) => ({
+                  label: t.title,
+                  cls: t.column === "done"
+                    ? "bg-green-100 text-green-800 line-through opacity-70"
+                    : "bg-violet-100 text-violet-800",
+                  done: t.column === "done",
+                })),
+              ];
+              const visible  = allItems.slice(0, MAX_VISIBLE);
+              const overflow = allItems.length - MAX_VISIBLE;
+
+              return (
+                <div
+                  key={day}
+                  onClick={() => openDay(day)}
+                  className={cn(
+                    "border-b border-r last:border-r-0 p-1.5 cursor-pointer transition-colors flex flex-col gap-1 min-h-[110px]",
+                    isSelected ? "bg-primary/5 ring-inset ring-2 ring-primary/40" : "hover:bg-muted/30",
+                    isToday ? "bg-orange-50/60" : "",
+                  )}
+                >
+                  {/* Número do dia */}
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className={cn(
+                      "text-sm font-semibold w-7 h-7 flex items-center justify-center rounded-full",
+                      isToday ? "bg-orange-500 text-white" : "text-foreground",
                     )}>
-                      {o.dia}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className={cn("font-semibold", cfg.color)}>{o.nome}</p>
-                      {o.ente && (
-                        <p className="text-[11px] text-muted-foreground mt-0.5">{o.ente}</p>
-                      )}
-                      {tributos.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {tributos.map((t) => (
-                            <Badge key={t.id} variant="outline" className="text-[10px] h-5 bg-white/70">
-                              {t.sigla}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                      {isOpen && (
-                        <div className="mt-3 space-y-2">
-                          <p className="text-sm text-muted-foreground">{o.descricao}</p>
-                          {o.regraVencimento && (
-                            <p className="text-xs italic text-muted-foreground">
-                              <strong>Vencimento:</strong> {o.regraVencimento}
-                            </p>
-                          )}
-                          {o.embasamento && (
-                            <div className="rounded-lg border bg-white/70 p-2.5">
-                              <p className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground flex items-center gap-1">
-                                <Scale className="h-3 w-3" /> Embasamento legal
-                              </p>
-                              <p className="text-xs mt-1 text-foreground">{o.embasamento}</p>
-                            </div>
-                          )}
-                          {tributos.length > 0 && (
-                            <div className="rounded-lg border bg-white/70 p-2.5">
-                              <p className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground flex items-center gap-1">
-                                <Database className="h-3 w-3" /> Tributos vinculados
-                              </p>
-                              <ul className="mt-1 space-y-0.5">
-                                {tributos.map((t) => (
-                                  <li key={t.id} className="text-xs text-foreground">
-                                    <strong>{t.sigla}</strong> — {t.nome}
-                                    {t.codigos && t.codigos.length > 0 && (
-                                      <span className="text-muted-foreground"> ({t.codigos.join(", ")})</span>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-                          {fontes.length > 0 && (
-                            <div className="rounded-lg border bg-white/70 p-2.5">
-                              <p className="text-[10px] uppercase tracking-wide font-semibold text-muted-foreground flex items-center gap-1">
-                                <Plug className="h-3 w-3" /> Fonte dos dados no Hub
-                              </p>
-                              <p className="text-xs mt-1 text-foreground">{fontes.join(" • ")}</p>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                      {o.regimes && (
-                        <div className="flex flex-wrap gap-1 mt-1.5">
-                          {o.regimes.map((r) => (
-                            <Badge key={r} variant="secondary" className="text-[10px] h-5">{r}</Badge>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                      {day}
+                    </span>
+                    {(hasObs || hasTasks) && (
+                      <div className="flex gap-0.5">
+                        {hasObs && <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />}
+                        {hasTasks && <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />}
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    {isHoje && <Badge className="bg-orange-500 text-white text-[10px]">Hoje</Badge>}
-                    {isProxima && !isHoje && <Badge variant="outline" className="border-yellow-400 text-yellow-700 text-[10px]">Em breve</Badge>}
-                    <Badge variant="outline" className={cn("text-[10px]", cfg.color)}>{cfg.label}</Badge>
+
+                  {/* Chips de eventos */}
+                  <div className="flex flex-col gap-0.5 flex-1">
+                    {visible.map((item, i) => (
+                      <span
+                        key={i}
+                        className={cn(
+                          "text-[10px] font-medium px-1.5 py-0.5 rounded truncate leading-tight",
+                          item.cls,
+                        )}
+                        title={item.label}
+                      >
+                        {item.label}
+                      </span>
+                    ))}
+                    {overflow > 0 && (
+                      <span className="text-[10px] text-muted-foreground px-1.5">
+                        +{overflow} mais
+                      </span>
+                    )}
                   </div>
                 </div>
-              </button>
-            );
-          })}
-        </CardContent>
-      </Card>
+              );
+            })}
+          </div>
+        </div>
 
-      {/* Tarefas do mês */}
-      {(() => {
-        const mesStr = `${ano}-${String(mes).padStart(2, "0")}`;
-        const tarefasMes = tasks.filter((t) => t.dueDate && t.dueDate.startsWith(mesStr));
-        if (tarefasMes.length === 0) return null;
-        return (
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <KanbanSquare className="h-4 w-4 text-primary" />
-                Tarefas com vencimento em {MES_NOMES[mes - 1]}
-                <Badge variant="outline" className="ml-1 text-[10px]">{tarefasMes.length}</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1.5">
-              {tarefasMes
-                .sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""))
-                .map((t) => {
-                  const isDone = t.column === "done";
-                  const dStr  = t.dueDate ?? "";
-                  const day   = dStr ? parseInt(dStr.slice(8, 10), 10) : null;
-                  const today = new Date().toISOString().slice(0, 10);
-                  const isToday   = dStr === today;
-                  const isOverdue = dStr < today && !isDone;
-                  return (
-                    <div
-                      key={t.id}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg border px-3 py-2 cursor-pointer transition-colors",
-                        isDone    ? "bg-green-50 border-green-200 opacity-60" :
-                        isToday   ? "bg-orange-50 border-orange-300 ring-1 ring-orange-400" :
-                        isOverdue ? "bg-red-50 border-red-200" :
-                                    "bg-card hover:bg-muted/50",
-                      )}
-                      onClick={() => updateTask(t.id, { column: isDone ? "doing" : "done" })}
-                    >
-                      <div className={cn(
-                        "w-8 h-8 shrink-0 rounded-lg flex items-center justify-center text-sm font-bold",
-                        isToday   ? "bg-orange-500 text-white" :
-                        isOverdue ? "bg-red-400 text-white" :
-                                    "bg-muted text-muted-foreground",
-                      )}>
-                        {day}
-                      </div>
-                      {isDone
-                        ? <CheckSquare className="w-4 h-4 text-green-600 shrink-0" />
-                        : <Square className="w-4 h-4 text-muted-foreground shrink-0" />}
-                      <span className={cn("flex-1 text-sm font-medium truncate", isDone && "line-through text-muted-foreground")}>
-                        {t.title}
-                      </span>
-                      {t.tag && (
-                        <Badge variant="outline" className="text-[10px] shrink-0">{t.tag}</Badge>
-                      )}
-                      {isToday && <Badge className="bg-orange-500 text-white text-[10px] shrink-0">Hoje</Badge>}
-                      {isOverdue && <Badge className="bg-red-400 text-white text-[10px] shrink-0">Atrasada</Badge>}
-                    </div>
-                  );
-                })
-              }
-              <p className="text-[10px] text-muted-foreground pt-1">
-                Clique para marcar/desmarcar como concluída. Gerencie no{" "}
-                <a href="/app/tarefas" className="text-primary hover:underline">quadro Kanban</a>.
-              </p>
-            </CardContent>
-          </Card>
-        );
-      })()}
-
-      {/* Legenda */}
-      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-        <span className="font-medium">Legenda:</span>
-        {Object.entries(TIPO_CONFIG).map(([key, cfg]) => (
-          <span key={key} className={cn("flex items-center gap-1.5", cfg.color)}>
-            <span className={cn("h-3 w-3 rounded-full", cfg.bg, "border")} />
-            {cfg.label}
-          </span>
-        ))}
+        {/* Painel lateral */}
+        {selectedDay && (
+          <DayPanel
+            sel={selectedDay}
+            ano={ano}
+            mes={mes}
+            onClose={() => setSelectedDay(null)}
+            onToggleTask={onToggleTask}
+          />
+        )}
       </div>
 
-      <p className="text-xs text-muted-foreground flex items-start gap-1">
-        <Info className="h-3 w-3 mt-0.5 shrink-0" />
-        <span>
-          Clique em qualquer obrigação para ver descrição, <strong>embasamento legal</strong>,
-          tributos vinculados e fonte dos dados. Os prazos indicam o vencimento padrão —
-          verifique sempre os portais oficiais
-          (<a href="https://www.gov.br/receitafederal" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-0.5">Receita Federal <ExternalLink className="h-3 w-3" /></a>,
-          {" "}<a href="https://portal.fazenda.sp.gov.br" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline inline-flex items-center gap-0.5">SEFAZ-SP <ExternalLink className="h-3 w-3" /></a>),
-          pois podem ocorrer postergações por feriados ou atos normativos.
-        </span>
-      </p>
+      {/* Rodapé */}
+      <div className="px-6 py-2 border-t bg-muted/30 text-[11px] text-muted-foreground flex items-center gap-1 shrink-0">
+        <Info className="h-3 w-3 shrink-0" />
+        Prazos indicam o vencimento padrão — verifique os portais oficiais{" "}
+        <a href="https://www.gov.br/receitafederal" target="_blank" rel="noopener noreferrer"
+          className="text-primary hover:underline inline-flex items-center gap-0.5">
+          Receita Federal <ExternalLink className="h-2.5 w-2.5" />
+        </a>{" "}e{" "}
+        <a href="https://portal.fazenda.sp.gov.br" target="_blank" rel="noopener noreferrer"
+          className="text-primary hover:underline inline-flex items-center gap-0.5">
+          SEFAZ-SP <ExternalLink className="h-2.5 w-2.5" />
+        </a>.
+        Tarefas: clique no dia e marque como concluída no painel.
+      </div>
     </div>
   );
 };

@@ -3,9 +3,8 @@
   "configurations": [
     {
       "name": "econ-hub",
-      "cwd": "C:\\projetos\\projeto-completo",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": ["--prefix", "C:\\projetos\\projeto-completo", "run", "dev"],
       "port": 8080,
       "autoPort": true
     }
