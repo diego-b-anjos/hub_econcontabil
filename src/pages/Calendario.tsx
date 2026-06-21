@@ -269,10 +269,10 @@ const Calendario = () => {
         municipio: clienteSelecionado.municipio,
         uf: clienteSelecionado.uf,
         taxRegime: clienteSelecionado.taxRegime,
-      });
+      }, ano);
     }
-    return obrigacoesDoMes(mes);
-  }, [mes, clienteSelecionado]);
+    return obrigacoesDoMes(mes, ano);
+  }, [mes, ano, clienteSelecionado]);
 
   const filtradas = useMemo(() => {
     let out = tipoFiltro === "todos" ? obrigacoesBase : obrigacoesBase.filter((o) => o.tipo === tipoFiltro);
@@ -353,8 +353,8 @@ const Calendario = () => {
           municipio: clienteSelecionado.municipio,
           uf: clienteSelecionado.uf,
           taxRegime: clienteSelecionado.taxRegime,
-        })
-      : obrigacoesDoMes(m);
+        }, ano)
+      : obrigacoesDoMes(m, ano);
     let out = tipoFiltro === "todos" ? base : base.filter((o) => o.tipo === tipoFiltro);
     if (municipioFiltro !== "Todos" && !clienteSelecionado) {
       out = out.filter((o) => o.tipo !== "municipal" || o.ente === municipioFiltro);

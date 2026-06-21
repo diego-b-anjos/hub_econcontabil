@@ -71,7 +71,7 @@ export default function Dashboard() {
   const mesAtual = agora.getMonth() + 1;
   const anoAtual = agora.getFullYear();
   const proximasObrigacoes = useMemo((): Obrigacao[] => {
-    const obrigacoes = obrigacoesDoMes(mesAtual);
+    const obrigacoes = obrigacoesDoMes(mesAtual, anoAtual);
     const hoje = agora.getDate();
     const proximas = obrigacoes
       .filter((o) => new Date(anoAtual, mesAtual - 1, o.dia) >= new Date(anoAtual, mesAtual - 1, hoje))

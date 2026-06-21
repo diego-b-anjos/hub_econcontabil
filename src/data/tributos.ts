@@ -18,6 +18,7 @@
  */
 
 import type { LucideIcon } from "lucide-react";
+import { getBrazilHolidays, nextWorkday, lastWorkdayOfMonth } from "@/lib/holidays";
 
 // ----------------------------------------------------------------------------
 // TIPOS
@@ -68,10 +69,15 @@ export interface Obrigacao {
   id: string;
   /** Tributos que esta obrigação recolhe ou declara (referência ao catálogo). */
   tributoIds: TributoId[];
-  /** Dia padrão de vencimento. Se variar (decêndio etc.), descreva em `regraVencimento`. */
+  /** Dia nominal de vencimento (antes de ajuste por dia útil). */
   dia: number;
-  /** Override do dia de vencimento para meses específicos (ex: mês 7 → dia 31). */
+  /** Override do dia nominal para meses específicos. */
   diasPorMes?: Record<number, number>;
+  /**
+   * Se true, o vencimento é o ÚLTIMO DIA ÚTIL do mês — ignora `dia` e `diasPorMes`.
+   * Se false/undefined, usa `dia` ajustado para o próximo dia útil se cair em fim de semana/feriado.
+   */
+  ultimoDiaUtil?: boolean;
   /** Meses em que ocorre (1..12). Vazio/undefined = mensal todo mês. */
   mesesEspeciais?: number[];
   /** Se true, NÃO é recorrente mensal — só nos meses em `mesesEspeciais`. */
@@ -532,7 +538,7 @@ const RECORRENTES: Obrigacao[] = [
 
 // Anuais / eventuais
 const OBR_OPCAO_SN: Obrigacao = {
-  id: "opcao_simples", tributoIds: ["das_simples"], dia: 31,
+  id: "opcao_simples", tributoIds: ["das_simples"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [1], apenasNosMesesEspeciais: true,
   nome: "Opção pelo Simples Nacional", tipo: "federal",
   regimes: ["Simples Nacional"],
@@ -542,7 +548,7 @@ const OBR_OPCAO_SN: Obrigacao = {
   fonteDados: ["RECEITA"],
 };
 const OBR_INFORME_RENDIMENTOS: Obrigacao = {
-  id: "informe_rendimentos", tributoIds: ["irrf_folha"], dia: 28,
+  id: "informe_rendimentos", tributoIds: ["irrf_folha"], dia: 28, ultimoDiaUtil: true,
   mesesEspeciais: [2], apenasNosMesesEspeciais: true,
   nome: "Informe de Rendimentos (PF)", tipo: "federal",
   descricao: "Entrega aos beneficiários (empregados, sócios, prestadores PF) do Comprovante de Rendimentos referente ao ano-calendário anterior. Substitui a função informativa da extinta DIRF a partir de 2024.",
@@ -551,7 +557,7 @@ const OBR_INFORME_RENDIMENTOS: Obrigacao = {
   fonteDados: ["FOLHA", "SCI"],
 };
 const OBR_DASN_SIMEI: Obrigacao = {
-  id: "dasn_simei", tributoIds: ["das_simples"], dia: 31,
+  id: "dasn_simei", tributoIds: ["das_simples"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [5], apenasNosMesesEspeciais: true,
   nome: "DASN-SIMEI (MEI)", tipo: "federal", regimes: ["MEI"],
   descricao: "Declaração Anual do MEI — ano-base anterior.",
@@ -560,7 +566,7 @@ const OBR_DASN_SIMEI: Obrigacao = {
   fonteDados: ["RECEITA"],
 };
 const OBR_ECD: Obrigacao = {
-  id: "ecd", tributoIds: ["irpj", "csll"], dia: 31,
+  id: "ecd", tributoIds: ["irpj", "csll"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [5], apenasNosMesesEspeciais: true,
   nome: "ECD — Escrituração Contábil Digital", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -576,14 +582,14 @@ const OBR_DIRPF_INI: Obrigacao = {
   embasamento: "IN RFB anual; Lei 9.250/1995", fonteDados: ["RECEITA"],
 };
 const OBR_DIRPF_FIM: Obrigacao = {
-  id: "dirpf_fim", tributoIds: ["irrf_folha"], dia: 31,
+  id: "dirpf_fim", tributoIds: ["irrf_folha"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [5], apenasNosMesesEspeciais: true,
   nome: "DIRPF — Prazo final", tipo: "federal",
   descricao: "Prazo final para entrega da Declaração de IRPF.",
   embasamento: "IN RFB anual; Lei 9.250/1995, art. 7º", fonteDados: ["RECEITA"],
 };
 const OBR_DEFIS: Obrigacao = {
-  id: "defis", tributoIds: ["das_simples"], dia: 31,
+  id: "defis", tributoIds: ["das_simples"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [3], apenasNosMesesEspeciais: true,
   nome: "DEFIS (Simples Nacional)", tipo: "federal", regimes: ["Simples Nacional"],
   descricao: "Declaração de Informações Socioeconômicas e Fiscais — ano-base anterior. Prazo legal: 31 de março (art. 72 da Resolução CGSN 140/2018). Verifique se a Receita Federal emitiu prorrogação para o ano vigente.",
@@ -591,7 +597,7 @@ const OBR_DEFIS: Obrigacao = {
   embasamento: "Resolução CGSN 140/2018, art. 72; LC 123/2006, art. 25", fonteDados: ["PGDAS_D"],
 };
 const OBR_ECF: Obrigacao = {
-  id: "ecf", tributoIds: ["irpj", "csll"], dia: 31,
+  id: "ecf", tributoIds: ["irpj", "csll"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [7], apenasNosMesesEspeciais: true,
   nome: "ECF — Escrituração Contábil Fiscal", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -599,7 +605,7 @@ const OBR_ECF: Obrigacao = {
   embasamento: "IN RFB 2.004/2021; Decreto 6.022/2007", fonteDados: ["SCI"],
 };
 const OBR_DIMOB: Obrigacao = {
-  id: "dimob", tributoIds: ["irpj"], dia: 28,
+  id: "dimob", tributoIds: ["irpj"], dia: 28, ultimoDiaUtil: true,
   mesesEspeciais: [2], apenasNosMesesEspeciais: true,
   nome: "DIMOB — Declaração de Atividades Imobiliárias", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -609,7 +615,7 @@ const OBR_DIMOB: Obrigacao = {
   fonteDados: ["MANUAL", "SCI"],
 };
 const OBR_DMED: Obrigacao = {
-  id: "dmed", tributoIds: ["irpj"], dia: 28,
+  id: "dmed", tributoIds: ["irpj"], dia: 28, ultimoDiaUtil: true,
   mesesEspeciais: [2], apenasNosMesesEspeciais: true,
   nome: "DMED — Declaração de Serviços Médicos e de Saúde", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -623,9 +629,7 @@ const OBR_DMED: Obrigacao = {
 // (1T: abr, 2T: jul, 3T: out, 4T: jan do ano seguinte). Cota única ou em até 3
 // quotas mensais (mín. R$ 1.000, +Selic). Embasamento: art. 5º da Lei 9.430/1996.
 const OBR_IRPJ_TRIM: Obrigacao = {
-  id: "irpj_trimestral", tributoIds: ["irpj"], dia: 30,
-  // Mês 1, 7, 10 têm 31 dias → vence no 31; mês 4 (abril) tem 30 dias → vence no 30
-  diasPorMes: { 1: 31, 7: 31, 10: 31 },
+  id: "irpj_trimestral", tributoIds: ["irpj"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [1, 4, 7, 10], apenasNosMesesEspeciais: true,
   nome: "IRPJ — Apuração Trimestral", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -635,8 +639,7 @@ const OBR_IRPJ_TRIM: Obrigacao = {
   fonteDados: ["MANUAL", "SCI"],
 };
 const OBR_CSLL_TRIM: Obrigacao = {
-  id: "csll_trimestral", tributoIds: ["csll"], dia: 30,
-  diasPorMes: { 1: 31, 7: 31, 10: 31 },
+  id: "csll_trimestral", tributoIds: ["csll"], dia: 31, ultimoDiaUtil: true,
   mesesEspeciais: [1, 4, 7, 10], apenasNosMesesEspeciais: true,
   nome: "CSLL — Apuração Trimestral", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -672,17 +675,42 @@ export const OBRIGACOES: Obrigacao[] = [...RECORRENTES, ...ANUAIS];
 
 /** Aplica override de dia por mês quando disponível. */
 function aplicarDiaMes(o: Obrigacao, mes: number): Obrigacao {
-  if (o.diasPorMes?.[mes] !== undefined) return { ...o, dia: o.diasPorMes[mes] };
+  if (!o.ultimoDiaUtil && o.diasPorMes?.[mes] !== undefined) return { ...o, dia: o.diasPorMes[mes] };
   return o;
 }
 
-/** Retorna as obrigações que vencem em determinado mês (1..12). */
-export function obrigacoesDoMes(mes: number): Obrigacao[] {
+/**
+ * Ajusta o dia nominal da obrigação para o dia útil efetivo no mês/ano dados.
+ * Regras:
+ *   - ultimoDiaUtil = true  → último dia útil do mês
+ *   - caso contrário        → próximo dia útil (se cair em fim de semana / feriado)
+ * Se o ajuste ultrapassar o mês (raro), mantém o último dia do mês.
+ */
+function ajustarDiaUtil(o: Obrigacao, mes: number, ano: number, holidays: Set<string>): Obrigacao {
+  const daysInMonth = new Date(ano, mes, 0).getDate();
+  let effectiveDia: number;
+
+  if (o.ultimoDiaUtil) {
+    effectiveDia = lastWorkdayOfMonth(ano, mes, holidays).getDate();
+  } else {
+    const nominal = Math.min(o.dia, daysInMonth);
+    const adjusted = nextWorkday(new Date(ano, mes - 1, nominal), holidays);
+    // Se ultrapassou o mês, usa último dia do mês (edge case: dez→jan)
+    effectiveDia = adjusted.getMonth() + 1 === mes ? adjusted.getDate() : daysInMonth;
+  }
+
+  return effectiveDia !== o.dia ? { ...o, dia: effectiveDia } : o;
+}
+
+/** Retorna as obrigações que vencem em determinado mês (1..12), com datas ajustadas por dias úteis. */
+export function obrigacoesDoMes(mes: number, ano?: number): Obrigacao[] {
+  const year = ano ?? new Date().getFullYear();
+  const holidays = getBrazilHolidays(year);
   const recorrentes = RECORRENTES;
-  const especiais = ANUAIS.filter(
-    (o) => o.mesesEspeciais?.includes(mes) ?? false,
-  );
-  return [...recorrentes, ...especiais].map((o) => aplicarDiaMes(o, mes));
+  const especiais = ANUAIS.filter((o) => o.mesesEspeciais?.includes(mes) ?? false);
+  return [...recorrentes, ...especiais]
+    .map((o) => aplicarDiaMes(o, mes))
+    .map((o) => ajustarDiaUtil(o, mes, year, holidays));
 }
 
 /** Mapeia o código de regime do cadastro de clientes para o rótulo usado em Obrigacao.regimes. */
@@ -715,8 +743,8 @@ const normEnte = (s: string | null | undefined): string =>
     .trim()
     .toLowerCase();
 
-export function obrigacoesParaCliente(mes: number, cli: ClienteFiltro): Obrigacao[] {
-  const todas = obrigacoesDoMes(mes);
+export function obrigacoesParaCliente(mes: number, cli: ClienteFiltro, ano?: number): Obrigacao[] {
+  const todas = obrigacoesDoMes(mes, ano);
   const regimeLabel = cli.taxRegime
     ? REGIME_CODE_TO_LABEL[cli.taxRegime] || (cli.taxRegime as RegimeAplicavel)
     : null;

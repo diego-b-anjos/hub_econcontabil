@@ -458,36 +458,99 @@ function TaskDialog({ task, defaultCol, onClose }: {
 // ── Impressão ────────────────────────────────────────────────────────────────
 
 function printTasks(tasks: Task[]) {
+  type ColCfg = { label: string; color: string; bg: string; border: string; dot: string };
+  const colCfg: Record<ColumnId, ColCfg> = {
+    todo:   { label: "A Fazer",      color: "#374151", bg: "#f9fafb", border: "#d1d5db", dot: "#9ca3af" },
+    doing:  { label: "Em Andamento", color: "#1d4ed8", bg: "#eff6ff", border: "#bfdbfe", dot: "#3b82f6" },
+    review: { label: "Em Revisão",   color: "#92400e", bg: "#fffbeb", border: "#fde68a", dot: "#f59e0b" },
+    done:   { label: "Concluído",    color: "#065f46", bg: "#f0fdf4", border: "#bbf7d0", dot: "#22c55e" },
+  };
+  const priCfg = {
+    alta:  { label: "Alta",  bg: "#fef2f2", color: "#dc2626" },
+    media: { label: "Média", bg: "#fefce8", color: "#b45309" },
+    baixa: { label: "Baixa", bg: "#f9fafb", color: "#6b7280" },
+  };
+  const recLabel: Record<string, string> = { none: "Esporádica", daily: "Diária", weekly: "Semanal", monthly: "Mensal" };
   const colOrder: ColumnId[] = ["todo", "doing", "review", "done"];
-  const colLabels: Record<ColumnId, string> = { todo: "A Fazer", doing: "Em Andamento", review: "Em Revisão", done: "Concluído" };
-  const rows = colOrder.map((col) => {
-    const ct = tasks.filter((t) => t.column === col);
-    if (!ct.length) return "";
-    return `<h3 style="margin:16px 0 6px;color:#444;font-size:13px;text-transform:uppercase;letter-spacing:.05em">${colLabels[col]} (${ct.length})</h3>
-    <table style="width:100%;border-collapse:collapse;font-size:12px">
-      <thead><tr style="background:#f4f4f4">
-        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Tarefa</th>
-        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Prioridade</th>
-        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Vencimento</th>
-        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Tag</th>
-        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Recorrência</th>
-      </tr></thead>
-      <tbody>${ct.map((t, i) => `<tr style="background:${i%2?"#fafafa":"#fff"}">
-        <td style="padding:5px 8px;border:1px solid #ddd">${t.title}${t.description ? `<br><span style="color:#888;font-size:11px">${t.description}</span>` : ""}</td>
-        <td style="padding:5px 8px;border:1px solid #ddd">${t.priority === "alta" ? "Alta" : t.priority === "media" ? "Média" : "Baixa"}</td>
-        <td style="padding:5px 8px;border:1px solid #ddd">${t.dueDate ? new Date(t.dueDate + "T12:00:00").toLocaleDateString("pt-BR") : "—"}</td>
-        <td style="padding:5px 8px;border:1px solid #ddd">${t.tag ?? "—"}</td>
-        <td style="padding:5px 8px;border:1px solid #ddd">${t.recurrence === "none" ? "Esporádica" : t.recurrence === "daily" ? "Diária" : t.recurrence === "weekly" ? "Semanal" : "Mensal"}</td>
-      </tr>`).join("")}</tbody>
-    </table>`;
+  const total = tasks.length;
+  const doneCount = tasks.filter((t) => t.column === "done").length;
+  const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+  const now = new Date().toLocaleString("pt-BR");
+
+  const summaryCards = colOrder.map((col) => {
+    const n = tasks.filter((t) => t.column === col).length;
+    const c = colCfg[col];
+    return `<div style="flex:1;background:${c.bg};border:1px solid ${c.border};border-radius:8px;padding:14px 18px;text-align:center">
+      <div style="font-size:26px;font-weight:800;color:${c.color}">${n}</div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:${c.color};margin-top:2px">${c.label}</div>
+    </div>`;
   }).join("");
 
-  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Tarefas — ECON Hub</title>
-    <style>body{font-family:Arial,sans-serif;padding:24px;color:#222}h1{font-size:18px;margin:0 0 4px}p{font-size:12px;color:#666;margin:0 0 16px}@media print{body{padding:12px}}</style>
+  const sections = colOrder.map((col) => {
+    const ct = tasks.filter((t) => t.column === col);
+    if (!ct.length) return "";
+    const c = colCfg[col];
+    const rows = ct.map((t) => {
+      const p = priCfg[t.priority];
+      const { total: st, done: sd } = countSubtasks(t.subtasks);
+      const due = t.dueDate ? new Date(t.dueDate + "T12:00:00").toLocaleDateString("pt-BR") : "—";
+      return `<tr>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;vertical-align:top">
+          <div style="font-weight:600;color:#111827;font-size:12px">${t.title}</div>
+          ${t.description ? `<div style="font-size:11px;color:#6b7280;margin-top:2px">${t.description}</div>` : ""}
+          ${t.meetLink ? `<div style="font-size:10px;color:#2563eb;margin-top:3px">&#127909; ${t.meetLink}</div>` : ""}
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;white-space:nowrap;vertical-align:top">
+          <span style="background:${p.bg};color:${p.color};font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px">${p.label}</span>
+        </td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;font-size:11px;color:#374151;white-space:nowrap;vertical-align:top">${due}</td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;font-size:11px;color:#374151;vertical-align:top">${t.tag || "—"}</td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;font-size:11px;color:#374151;white-space:nowrap;vertical-align:top">${recLabel[t.recurrence]}</td>
+        <td style="padding:9px 12px;border-bottom:1px solid #f3f4f6;font-size:11px;color:#374151;white-space:nowrap;vertical-align:top">${st > 0 ? `${sd}/${st}` : "—"}</td>
+      </tr>`;
+    }).join("");
+    return `<div style="margin-bottom:28px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:6px;border-bottom:2px solid ${c.border}">
+        <span style="width:10px;height:10px;background:${c.dot};border-radius:50%;display:inline-block;flex-shrink:0"></span>
+        <span style="font-size:12px;font-weight:800;color:${c.color};text-transform:uppercase;letter-spacing:.06em">${c.label}</span>
+        <span style="background:${c.bg};border:1px solid ${c.border};color:${c.color};font-size:10px;font-weight:700;padding:1px 7px;border-radius:999px">${ct.length}</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+        <thead style="background:${c.bg}">
+          <tr>
+            ${["Tarefa","Prioridade","Vencimento","Tag","Recorrência","Subtarefas"].map((h) =>
+              `<th style="padding:7px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-bottom:1px solid ${c.border}">${h}</th>`
+            ).join("")}
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+  <title>Tarefas — ECON Hub</title>
+  <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;background:#f8fafc;color:#111827;padding:32px}@media print{body{background:#fff;padding:18px}}</style>
   </head><body>
-    <h1>Quadro de Tarefas — ECON Hub</h1>
-    <p>Gerado em ${new Date().toLocaleString("pt-BR")} · ${tasks.length} tarefa(s) total</p>
-    ${rows}
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e5e7eb">
+      <div>
+        <div style="font-size:20px;font-weight:800;color:#1e293b">ECON Hub do Escritório</div>
+        <div style="font-size:12px;color:#64748b;margin-top:3px">Quadro de Tarefas · gerado em ${now}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:28px;font-weight:800;color:#1e293b">${pct}%</div>
+        <div style="font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.05em">Concluído</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:20px">${summaryCards}</div>
+    <div style="height:8px;background:#e5e7eb;border-radius:999px;margin-bottom:28px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:#22c55e"></div>
+    </div>
+    ${sections}
+    <div style="margin-top:24px;padding-top:14px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;font-size:10px;color:#9ca3af">
+      <span>ECON Hub — Sistema de Gestão Contábil</span>
+      <span>${total} tarefa${total !== 1 ? "s" : ""} no total</span>
+    </div>
   </body></html>`;
 
   const w = window.open("", "_blank");
@@ -495,7 +558,7 @@ function printTasks(tasks: Task[]) {
   w.document.write(html);
   w.document.close();
   w.focus();
-  setTimeout(() => { w.print(); }, 400);
+  setTimeout(() => w.print(), 400);
 }
 
 // ── Gráfico de progresso ──────────────────────────────────────────────────────
