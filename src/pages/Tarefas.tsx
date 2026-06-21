@@ -562,7 +562,7 @@ export default function Tarefas() {
     const base = navDate ?? todayStr();
     const d = new Date(base + "T12:00:00");
     d.setDate(d.getDate() + delta);
-    setNavDate(d.toISOString().slice(0, 10));
+    setNavDate(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`);
   }
 
   function onDragOverTask(e: React.DragEvent, overId: string) {
@@ -588,9 +588,23 @@ export default function Tarefas() {
   const todayCount  = tasks.filter((t) => t.dueDate === today && t.column !== "done").length;
   const overdueCount = tasks.filter((t) => t.dueDate && t.dueDate < today && t.column !== "done").length;
 
-  // Filtragem por data de navegação
+  // Filtragem por data de navegação — inclui tarefas recorrentes nos dias do ciclo
+  function taskMatchesDate(task: Task, date: string): boolean {
+    if (!task.dueDate) return date === today;
+    if (task.dueDate === date) return true;
+    if (task.recurrence === "none") return false;
+    const base = new Date(task.dueDate + "T12:00:00");
+    const nav  = new Date(date + "T12:00:00");
+    if (nav < base) return false;
+    const diffDays = Math.round((nav.getTime() - base.getTime()) / 86400000);
+    if (task.recurrence === "daily")   return true;
+    if (task.recurrence === "weekly")  return diffDays % 7 === 0;
+    if (task.recurrence === "monthly") return nav.getDate() === base.getDate();
+    return false;
+  }
+
   const visibleTasks = navDate
-    ? tasks.filter((t) => t.dueDate === navDate || (!t.dueDate && navDate === today))
+    ? tasks.filter((t) => taskMatchesDate(t, navDate))
     : tasks;
 
   const navLabel = navDate
@@ -621,8 +635,8 @@ export default function Tarefas() {
         </div>
       </div>
 
-      {/* Gráfico de progresso */}
-      <KanbanProgress tasks={tasks} />
+      {/* Gráfico de progresso — total do dia/visão atual */}
+      <KanbanProgress tasks={visibleTasks} />
 
       {/* Navegação diária */}
       <div className="flex items-center gap-2 bg-muted/40 border rounded-lg px-3 py-2 w-fit">
