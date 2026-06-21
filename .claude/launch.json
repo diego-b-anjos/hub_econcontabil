@@ -3,9 +3,11 @@
   "configurations": [
     {
       "name": "econ-hub",
-      "runtimeExecutable": "C:\\Users\\Diego Barbosa\\Desktop\\Projeto\\projeto-completo\\.claude\\start-dev.cmd",
-      "runtimeArgs": [],
-      "port": 8080
+      "cwd": "C:\\projetos\\projeto-completo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 8080,
+      "autoPort": true
     }
   ]
 }

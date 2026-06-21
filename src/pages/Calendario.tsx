@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight, Info, ExternalLink, Scale, Database, Plug, FileDown } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Info, ExternalLink, Scale, Database, Plug, FileDown, CheckSquare, Square, KanbanSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { useTaskStore } from "@/store/taskStore";
 import {
   obrigacoesDoMes,
   obrigacoesParaCliente,
@@ -60,6 +61,7 @@ const Calendario = () => {
   const [clientes, setClientes] = useState<Client[]>([]);
   const [selected, setSelected] = useState<Obrigacao | null>(null);
   const [exportOpen, setExportOpen] = useState(false);
+  const { tasks, updateTask } = useTaskStore();
 
   function mesAnterior() {
     if (mes === 1) { setMes(12); setAno((a) => a - 1); }
@@ -431,6 +433,74 @@ const Calendario = () => {
           })}
         </CardContent>
       </Card>
+
+      {/* Tarefas do mês */}
+      {(() => {
+        const mesStr = `${ano}-${String(mes).padStart(2, "0")}`;
+        const tarefasMes = tasks.filter((t) => t.dueDate && t.dueDate.startsWith(mesStr));
+        if (tarefasMes.length === 0) return null;
+        return (
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <KanbanSquare className="h-4 w-4 text-primary" />
+                Tarefas com vencimento em {MES_NOMES[mes - 1]}
+                <Badge variant="outline" className="ml-1 text-[10px]">{tarefasMes.length}</Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-1.5">
+              {tarefasMes
+                .sort((a, b) => (a.dueDate ?? "").localeCompare(b.dueDate ?? ""))
+                .map((t) => {
+                  const isDone = t.column === "done";
+                  const dStr  = t.dueDate ?? "";
+                  const day   = dStr ? parseInt(dStr.slice(8, 10), 10) : null;
+                  const today = new Date().toISOString().slice(0, 10);
+                  const isToday   = dStr === today;
+                  const isOverdue = dStr < today && !isDone;
+                  return (
+                    <div
+                      key={t.id}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg border px-3 py-2 cursor-pointer transition-colors",
+                        isDone    ? "bg-green-50 border-green-200 opacity-60" :
+                        isToday   ? "bg-orange-50 border-orange-300 ring-1 ring-orange-400" :
+                        isOverdue ? "bg-red-50 border-red-200" :
+                                    "bg-card hover:bg-muted/50",
+                      )}
+                      onClick={() => updateTask(t.id, { column: isDone ? "doing" : "done" })}
+                    >
+                      <div className={cn(
+                        "w-8 h-8 shrink-0 rounded-lg flex items-center justify-center text-sm font-bold",
+                        isToday   ? "bg-orange-500 text-white" :
+                        isOverdue ? "bg-red-400 text-white" :
+                                    "bg-muted text-muted-foreground",
+                      )}>
+                        {day}
+                      </div>
+                      {isDone
+                        ? <CheckSquare className="w-4 h-4 text-green-600 shrink-0" />
+                        : <Square className="w-4 h-4 text-muted-foreground shrink-0" />}
+                      <span className={cn("flex-1 text-sm font-medium truncate", isDone && "line-through text-muted-foreground")}>
+                        {t.title}
+                      </span>
+                      {t.tag && (
+                        <Badge variant="outline" className="text-[10px] shrink-0">{t.tag}</Badge>
+                      )}
+                      {isToday && <Badge className="bg-orange-500 text-white text-[10px] shrink-0">Hoje</Badge>}
+                      {isOverdue && <Badge className="bg-red-400 text-white text-[10px] shrink-0">Atrasada</Badge>}
+                    </div>
+                  );
+                })
+              }
+              <p className="text-[10px] text-muted-foreground pt-1">
+                Clique para marcar/desmarcar como concluída. Gerencie no{" "}
+                <a href="/app/tarefas" className="text-primary hover:underline">quadro Kanban</a>.
+              </p>
+            </CardContent>
+          </Card>
+        );
+      })()}
 
       {/* Legenda */}
       <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">

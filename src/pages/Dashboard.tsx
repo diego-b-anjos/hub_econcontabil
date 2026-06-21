@@ -4,8 +4,9 @@ import { apiClients, apiSimulations, type Simulation } from "@/lib/api";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Bell, CalendarDays, ExternalLink, FileBarChart2, Newspaper } from "lucide-react";
+import { ArrowRight, Bell, CalendarDays, CheckSquare, ExternalLink, FileBarChart2, KanbanSquare, Newspaper, Square } from "lucide-react";
 import { DateWeatherWidget } from "@/components/DateWeatherWidget";
+import { useTaskStore } from "@/store/taskStore";
 import {
   APP_MODULES,
   MODULE_CATEGORIES,
@@ -106,6 +107,9 @@ export default function Dashboard() {
           small
         />
       </div>
+
+      {/* Tarefas do Dia */}
+      <TarefasDoDia />
 
       {/* Próximas obrigações + Simulações recentes */}
       <div className="grid md:grid-cols-2 gap-4">
@@ -243,6 +247,64 @@ export default function Dashboard() {
         );
       })}
     </div>
+  );
+}
+
+// ─── Tarefas do Dia ──────────────────────────────────────────────────────────
+
+function TarefasDoDia() {
+  const { tasks, updateTask } = useTaskStore();
+  const today = new Date().toISOString().slice(0, 10);
+  const todayTasks = tasks.filter((t) => t.dueDate === today);
+
+  if (todayTasks.length === 0) return null;
+
+  const pending = todayTasks.filter((t) => t.column !== "done");
+  const done    = todayTasks.filter((t) => t.column === "done");
+
+  return (
+    <Card className="border-orange-200 bg-orange-50/50">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm flex items-center gap-2">
+          <KanbanSquare className="h-4 w-4 text-orange-600" />
+          Tarefas de hoje
+          {pending.length > 0 && (
+            <Badge className="text-[10px] bg-orange-500 text-white ml-1">{pending.length} pendente{pending.length !== 1 ? "s" : ""}</Badge>
+          )}
+          {pending.length === 0 && done.length > 0 && (
+            <Badge className="text-[10px] bg-green-500 text-white ml-1">Tudo concluído!</Badge>
+          )}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid sm:grid-cols-2 gap-1.5">
+          {todayTasks.map((t) => {
+            const isDone = t.column === "done";
+            return (
+              <div
+                key={t.id}
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 border cursor-pointer transition-colors
+                  ${isDone ? "bg-green-50 border-green-200 opacity-70" : "bg-white border-orange-200 hover:border-orange-400"}`}
+                onClick={() => updateTask(t.id, { column: isDone ? "doing" : "done" })}
+              >
+                {isDone
+                  ? <CheckSquare className="w-4 h-4 text-green-600 shrink-0" />
+                  : <Square className="w-4 h-4 text-orange-400 shrink-0" />}
+                <span className={`text-sm flex-1 truncate ${isDone ? "line-through text-muted-foreground" : ""}`}>
+                  {t.title}
+                </span>
+                {t.tag && (
+                  <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 shrink-0">{t.tag}</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <Link to="/app/tarefas" className="flex items-center gap-1 text-xs text-orange-600 hover:underline mt-3 font-medium">
+          Ver quadro completo <ArrowRight className="h-3 w-3" />
+        </Link>
+      </CardContent>
+    </Card>
   );
 }
 
