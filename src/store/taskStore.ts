@@ -22,6 +22,7 @@ export interface Task {
   dueDate?: string;      // YYYY-MM-DD
   recurrence: Recurrence;
   subtasks: SubTask[];
+  meetLink?: string;
 }
 
 const STORAGE_KEY = "econ:tasks:v2";

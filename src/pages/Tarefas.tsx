@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
-  Plus, GripVertical, Tag, Trash2, ChevronRight, ChevronDown,
-  RotateCcw, CalendarDays, CheckSquare, Square, Copy,
+  Plus, GripVertical, Tag, Trash2, ChevronRight, ChevronDown, ChevronLeft,
+  RotateCcw, CalendarDays, CheckSquare, Square, Copy, Video, ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -195,11 +195,11 @@ function TaskCard({ task, onEdit, dragId, onDragStart, onDragEnd, onDragOverTask
 
 interface FormState {
   title: string; description: string; priority: Priority;
-  tag: string; dueDate: string; recurrence: Recurrence;
+  tag: string; dueDate: string; recurrence: Recurrence; meetLink: string;
 }
 
 const EMPTY: FormState = {
-  title: "", description: "", priority: "media", tag: "", dueDate: "", recurrence: "none",
+  title: "", description: "", priority: "media", tag: "", dueDate: "", recurrence: "none", meetLink: "",
 };
 
 function TaskDialog({ task, defaultCol, onClose }: {
@@ -212,6 +212,7 @@ function TaskDialog({ task, defaultCol, onClose }: {
     title: task.title, description: task.description ?? "",
     priority: task.priority, tag: task.tag ?? "",
     dueDate: task.dueDate ?? "", recurrence: task.recurrence,
+    meetLink: task.meetLink ?? "",
   } : EMPTY);
 
   const [newSub, setNewSub] = useState("");
@@ -220,13 +221,29 @@ function TaskDialog({ task, defaultCol, onClose }: {
 
   function save() {
     if (!form.title.trim()) return;
-    const data = { ...form, dueDate: form.dueDate || undefined };
+    const data = { ...form, dueDate: form.dueDate || undefined, meetLink: form.meetLink || undefined };
     if (task) updateTask(task.id, data);
     else addTask({ ...data, column: defaultCol, subtasks: [] });
     onClose();
   }
 
   function remove() { if (task) { deleteTask(task.id); onClose(); } }
+
+  function duplicate() {
+    if (!task) return;
+    addTask({
+      title: `${form.title} (cópia)`,
+      description: form.description || undefined,
+      priority: form.priority,
+      tag: form.tag || undefined,
+      column: task.column,
+      dueDate: form.dueDate || undefined,
+      recurrence: form.recurrence,
+      meetLink: form.meetLink || undefined,
+      subtasks: [],
+    });
+    onClose();
+  }
 
   function addTopSub() {
     if (!newSub.trim() || !task) return;
@@ -353,6 +370,39 @@ function TaskDialog({ task, defaultCol, onClose }: {
             </div>
           )}
 
+          {/* Google Meet */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-1.5">
+              <Video className="w-3.5 h-3.5 text-blue-600" /> Reunião / Google Meet
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                value={form.meetLink}
+                onChange={(e) => setForm((f) => ({ ...f, meetLink: e.target.value }))}
+                placeholder="Cole o link da reunião..."
+                className="h-8 text-xs flex-1"
+              />
+              {form.meetLink ? (
+                <Button
+                  size="sm" variant="outline" className="h-8 px-3 gap-1 text-xs text-blue-600 border-blue-200 hover:bg-blue-50"
+                  onClick={() => window.open(form.meetLink, "_blank")}
+                  type="button"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" /> Abrir
+                </Button>
+              ) : (
+                <Button
+                  size="sm" variant="outline" className="h-8 px-3 gap-1 text-xs text-blue-600 border-blue-200 hover:bg-blue-50"
+                  onClick={() => window.open("https://meet.google.com/new", "_blank")}
+                  type="button"
+                >
+                  <Video className="w-3.5 h-3.5" /> Criar reunião
+                </Button>
+              )}
+            </div>
+            <p className="text-[10px] text-muted-foreground">Cole o link do Meet ou clique em "Criar reunião" para abrir um novo.</p>
+          </div>
+
           {/* Subtarefas — só em modo edição */}
           {task && (
             <div className="space-y-2">
@@ -386,9 +436,14 @@ function TaskDialog({ task, defaultCol, onClose }: {
 
         <DialogFooter className="gap-2 pt-2">
           {task && (
-            <Button variant="destructive" size="sm" onClick={remove} className="mr-auto gap-1">
-              <Trash2 className="w-3.5 h-3.5" /> Excluir
-            </Button>
+            <>
+              <Button variant="destructive" size="sm" onClick={remove} className="mr-auto gap-1">
+                <Trash2 className="w-3.5 h-3.5" /> Excluir
+              </Button>
+              <Button variant="outline" size="sm" onClick={duplicate} className="gap-1">
+                <Copy className="w-3.5 h-3.5" /> Duplicar
+              </Button>
+            </>
           )}
           <Button variant="outline" onClick={onClose}>Cancelar</Button>
           <Button onClick={save} disabled={!form.title.trim()}>
@@ -408,9 +463,17 @@ export default function Tarefas() {
   const [defaultCol, setDefaultCol] = useState<ColumnId>("todo");
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<ColumnId | null>(null);
+  const [navDate, setNavDate] = useState<string | null>(new Date().toISOString().slice(0, 10));
 
   function openCreate(col: ColumnId = "todo") { setDefaultCol(col); setDialogTask("new"); }
   function openEdit(task: Task) { setDialogTask(task); }
+
+  function shiftDate(delta: number) {
+    const base = navDate ?? new Date().toISOString().slice(0, 10);
+    const d = new Date(base + "T12:00:00");
+    d.setDate(d.getDate() + delta);
+    setNavDate(d.toISOString().slice(0, 10));
+  }
 
   function onDragOverTask(e: React.DragEvent, overId: string) {
     e.preventDefault();
@@ -435,6 +498,17 @@ export default function Tarefas() {
   const todayCount  = tasks.filter((t) => t.dueDate === today && t.column !== "done").length;
   const overdueCount = tasks.filter((t) => t.dueDate && t.dueDate < today && t.column !== "done").length;
 
+  // Filtragem por data de navegação
+  const visibleTasks = navDate
+    ? tasks.filter((t) => t.dueDate === navDate || (!t.dueDate && navDate === today))
+    : tasks;
+
+  const navLabel = navDate
+    ? navDate === today
+      ? "Hoje"
+      : new Date(navDate + "T12:00:00").toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "short" })
+    : "Todas";
+
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
@@ -452,10 +526,38 @@ export default function Tarefas() {
         </Button>
       </div>
 
+      {/* Navegação diária */}
+      <div className="flex items-center gap-2 bg-muted/40 border rounded-lg px-3 py-2 w-fit">
+        <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => shiftDate(-1)}>
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
+        <button
+          className="text-sm font-semibold min-w-[100px] text-center hover:text-primary transition-colors"
+          onClick={() => setNavDate(today)}
+          title="Ir para hoje"
+        >
+          {navLabel}
+          {navDate === today && <span className="ml-1.5 text-[10px] font-bold text-orange-500 bg-orange-100 px-1.5 py-0.5 rounded-full">hoje</span>}
+        </button>
+        <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => shiftDate(1)}>
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+        {navDate && (
+          <Button size="sm" variant="ghost" className="h-7 px-2 text-xs text-muted-foreground" onClick={() => setNavDate(null)}>
+            Ver todas
+          </Button>
+        )}
+        {navDate && (
+          <span className="text-xs text-muted-foreground ml-1">
+            {visibleTasks.length} tarefa{visibleTasks.length !== 1 ? "s" : ""}
+          </span>
+        )}
+      </div>
+
       {/* Kanban */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         {COLUMNS.map((col) => {
-          const colTasks = tasks.filter((t) => t.column === col.id);
+          const colTasks = visibleTasks.filter((t) => t.column === col.id);
           const isOver = dragOverCol === col.id;
           return (
             <div

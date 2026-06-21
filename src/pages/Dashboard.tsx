@@ -261,50 +261,81 @@ function TarefasDoDia() {
 
   const pending = todayTasks.filter((t) => t.column !== "done");
   const done    = todayTasks.filter((t) => t.column === "done");
+  const progress = todayTasks.length > 0 ? Math.round((done.length / todayTasks.length) * 100) : 0;
+  const allDone = pending.length === 0 && done.length > 0;
 
   return (
-    <Card className="border-orange-200 bg-orange-50/50">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm flex items-center gap-2">
-          <KanbanSquare className="h-4 w-4 text-orange-600" />
-          Tarefas de hoje
-          {pending.length > 0 && (
-            <Badge className="text-[10px] bg-orange-500 text-white ml-1">{pending.length} pendente{pending.length !== 1 ? "s" : ""}</Badge>
-          )}
-          {pending.length === 0 && done.length > 0 && (
-            <Badge className="text-[10px] bg-green-500 text-white ml-1">Tudo concluído!</Badge>
-          )}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid sm:grid-cols-2 gap-1.5">
+    <div className={`rounded-xl border-2 overflow-hidden ${allDone ? "border-green-300 bg-green-50" : "border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50"}`}>
+      {/* Banner header */}
+      <div className={`px-5 py-4 flex items-center justify-between gap-4 ${allDone ? "bg-green-100/60" : "bg-orange-100/60"}`}>
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${allDone ? "bg-green-500" : "bg-orange-500"}`}>
+            <KanbanSquare className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <p className={`font-bold text-base ${allDone ? "text-green-800" : "text-orange-800"}`}>
+              {allDone ? "Todas as tarefas concluídas!" : "Tarefas para hoje"}
+            </p>
+            <p className={`text-xs ${allDone ? "text-green-600" : "text-orange-600"}`}>
+              {allDone
+                ? `${done.length} tarefa${done.length !== 1 ? "s" : ""} concluída${done.length !== 1 ? "s" : ""}`
+                : `${pending.length} pendente${pending.length !== 1 ? "s" : ""} · ${done.length} concluída${done.length !== 1 ? "s" : ""}`}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          {/* Progresso circular simples */}
+          <div className="flex flex-col items-center">
+            <span className={`text-2xl font-bold ${allDone ? "text-green-600" : "text-orange-600"}`}>{progress}%</span>
+            <span className="text-[10px] text-muted-foreground">concluído</span>
+          </div>
+          <Link to="/app/tarefas">
+            <Badge className={`cursor-pointer text-xs gap-1 ${allDone ? "bg-green-500 hover:bg-green-600" : "bg-orange-500 hover:bg-orange-600"} text-white`}>
+              Ver kanban <ArrowRight className="h-3 w-3" />
+            </Badge>
+          </Link>
+        </div>
+      </div>
+
+      {/* Barra de progresso */}
+      <div className="h-1.5 bg-muted/40">
+        <div
+          className={`h-full transition-all duration-500 ${allDone ? "bg-green-500" : "bg-orange-500"}`}
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+
+      {/* Lista de tarefas */}
+      <div className="p-4">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
           {todayTasks.map((t) => {
             const isDone = t.column === "done";
             return (
               <div
                 key={t.id}
-                className={`flex items-center gap-2 rounded-lg px-3 py-2 border cursor-pointer transition-colors
-                  ${isDone ? "bg-green-50 border-green-200 opacity-70" : "bg-white border-orange-200 hover:border-orange-400"}`}
+                className={`flex items-center gap-2.5 rounded-lg px-3 py-2.5 border cursor-pointer transition-all
+                  ${isDone
+                    ? "bg-green-50 border-green-200 opacity-60"
+                    : "bg-white border-orange-200 hover:border-orange-400 hover:shadow-sm"}`}
                 onClick={() => updateTask(t.id, { column: isDone ? "doing" : "done" })}
               >
                 {isDone
                   ? <CheckSquare className="w-4 h-4 text-green-600 shrink-0" />
                   : <Square className="w-4 h-4 text-orange-400 shrink-0" />}
-                <span className={`text-sm flex-1 truncate ${isDone ? "line-through text-muted-foreground" : ""}`}>
-                  {t.title}
-                </span>
-                {t.tag && (
-                  <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 shrink-0">{t.tag}</span>
-                )}
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm font-medium truncate ${isDone ? "line-through text-muted-foreground" : ""}`}>
+                    {t.title}
+                  </p>
+                  {t.tag && (
+                    <span className="text-[10px] text-muted-foreground">{t.tag}</span>
+                  )}
+                </div>
               </div>
             );
           })}
         </div>
-        <Link to="/app/tarefas" className="flex items-center gap-1 text-xs text-orange-600 hover:underline mt-3 font-medium">
-          Ver quadro completo <ArrowRight className="h-3 w-3" />
-        </Link>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 

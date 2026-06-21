@@ -380,18 +380,6 @@ const Calendario = () => {
             </p>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            {/* Filtros de tipo */}
-            {(["todos","federal","estadual","municipal","trabalhista"] as const).map((t) => (
-              <Button
-                key={t}
-                variant={tipoFiltro === t ? "default" : "outline"}
-                size="sm"
-                onClick={() => setTipoFiltro(t)}
-                className="capitalize text-xs h-7 px-2"
-              >
-                {t === "todos" ? "Todos" : TIPO_CONFIG[t]?.label}
-              </Button>
-            ))}
             <Button variant="outline" size="sm" className="h-7 px-2 text-xs" onClick={() => setExportOpen(true)}>
               <FileDown className="h-3.5 w-3.5 mr-1" /> Exportar
             </Button>
@@ -460,16 +448,35 @@ const Calendario = () => {
               )}
             </div>
 
-            {/* Legenda */}
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            {/* Legenda — clique para filtrar */}
+            <div className="flex items-center gap-3 text-xs">
+              <button
+                onClick={() => setTipoFiltro("todos")}
+                className={cn("flex items-center gap-1 cursor-pointer transition-opacity",
+                  tipoFiltro === "todos" ? "text-foreground font-semibold" : "text-muted-foreground opacity-50 hover:opacity-80"
+                )}
+              >
+                <span className="w-2.5 h-2.5 rounded-full bg-zinc-400" />
+                Todos
+              </button>
               {Object.entries(TIPO_CONFIG).map(([key, cfg]) => (
-                <span key={key} className="flex items-center gap-1">
-                  <span className={cn("w-2 h-2 rounded-full", cfg.dot)} />
+                <button
+                  key={key}
+                  onClick={() => setTipoFiltro(tipoFiltro === key ? "todos" : key)}
+                  className={cn("flex items-center gap-1 cursor-pointer transition-opacity",
+                    tipoFiltro === key
+                      ? "text-foreground font-semibold"
+                      : tipoFiltro !== "todos"
+                        ? "text-muted-foreground opacity-30 hover:opacity-60"
+                        : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <span className={cn("w-2.5 h-2.5 rounded-full", cfg.dot)} />
                   {cfg.label}
-                </span>
+                </button>
               ))}
-              <span className="flex items-center gap-1">
-                <span className="w-2 h-2 rounded-full bg-violet-500" />
+              <span className="flex items-center gap-1 text-muted-foreground">
+                <span className="w-2.5 h-2.5 rounded-full bg-teal-500" />
                 Tarefa
               </span>
             </div>
@@ -506,7 +513,7 @@ const Calendario = () => {
                   label: t.title,
                   cls: t.column === "done"
                     ? "bg-green-100 text-green-800 line-through opacity-70"
-                    : "bg-violet-100 text-violet-800",
+                    : "bg-teal-100 text-teal-800",
                   done: t.column === "done",
                 })),
               ];
@@ -534,7 +541,7 @@ const Calendario = () => {
                     {(hasObs || hasTasks) && (
                       <div className="flex gap-0.5">
                         {hasObs && <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />}
-                        {hasTasks && <span className="w-1.5 h-1.5 rounded-full bg-violet-400" />}
+                        {hasTasks && <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />}
                       </div>
                     )}
                   </div>
