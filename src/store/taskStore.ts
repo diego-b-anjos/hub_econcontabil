@@ -31,6 +31,12 @@ function uid() {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 }
 
+/** Returns today's date as YYYY-MM-DD using local timezone (avoids UTC offset bug). */
+export function todayStr(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 function togglePath(subtasks: SubTask[], path: string[]): SubTask[] {
   const [head, ...tail] = path;
   return subtasks.map((st) => {
@@ -85,7 +91,7 @@ function defaultTasks(): Task[] {
       id: uid(), title: "Revisar declarações de IR", description: "Conferir todas as declarações pendentes do mês.",
       priority: "alta", tag: "Fiscal", column: "todo", createdAt: new Date().toISOString(),
       recurrence: "none", subtasks: [],
-      dueDate: new Date().toISOString().slice(0, 10),
+      dueDate: todayStr(),
     },
     {
       id: uid(), title: "Atualizar cadastro de clientes",

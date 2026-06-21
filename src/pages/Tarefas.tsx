@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
   Plus, GripVertical, Tag, Trash2, ChevronRight, ChevronDown, ChevronLeft,
-  RotateCcw, CalendarDays, CheckSquare, Square, Copy, Video, ExternalLink,
+  RotateCcw, CalendarDays, CheckSquare, Square, Copy, Video, ExternalLink, Printer,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import {
-  useTaskStore, countSubtasks,
+  useTaskStore, countSubtasks, todayStr,
   type Task, type ColumnId, type Priority, type Recurrence, type SubTask,
 } from "@/store/taskStore";
 
@@ -124,7 +124,7 @@ function TaskCard({ task, onEdit, dragId, onDragStart, onDragEnd, onDragOverTask
   onDragOverTask: (e: React.DragEvent, id: string) => void;
 }) {
   const { total, done } = countSubtasks(task.subtasks);
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayStr();
   const isOverdue = task.dueDate && task.dueDate < today && task.column !== "done";
   const isToday  = task.dueDate === today;
 
@@ -253,7 +253,7 @@ function TaskDialog({ task, defaultCol, onClose }: {
 
   function doReplicate() {
     if (!task) return;
-    const base = new Date(form.dueDate || new Date().toISOString().slice(0, 10));
+    const base = new Date(form.dueDate || todayStr());
     const step = RECURRENCE_DAYS[form.recurrence] || 1;
     const dates: string[] = [];
     for (let i = 1; i <= replicateCount; i++) {
@@ -455,6 +455,96 @@ function TaskDialog({ task, defaultCol, onClose }: {
   );
 }
 
+// ── Impressão ────────────────────────────────────────────────────────────────
+
+function printTasks(tasks: Task[]) {
+  const colOrder: ColumnId[] = ["todo", "doing", "review", "done"];
+  const colLabels: Record<ColumnId, string> = { todo: "A Fazer", doing: "Em Andamento", review: "Em Revisão", done: "Concluído" };
+  const rows = colOrder.map((col) => {
+    const ct = tasks.filter((t) => t.column === col);
+    if (!ct.length) return "";
+    return `<h3 style="margin:16px 0 6px;color:#444;font-size:13px;text-transform:uppercase;letter-spacing:.05em">${colLabels[col]} (${ct.length})</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead><tr style="background:#f4f4f4">
+        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Tarefa</th>
+        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Prioridade</th>
+        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Vencimento</th>
+        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Tag</th>
+        <th style="padding:5px 8px;text-align:left;border:1px solid #ddd">Recorrência</th>
+      </tr></thead>
+      <tbody>${ct.map((t, i) => `<tr style="background:${i%2?"#fafafa":"#fff"}">
+        <td style="padding:5px 8px;border:1px solid #ddd">${t.title}${t.description ? `<br><span style="color:#888;font-size:11px">${t.description}</span>` : ""}</td>
+        <td style="padding:5px 8px;border:1px solid #ddd">${t.priority === "alta" ? "Alta" : t.priority === "media" ? "Média" : "Baixa"}</td>
+        <td style="padding:5px 8px;border:1px solid #ddd">${t.dueDate ? new Date(t.dueDate + "T12:00:00").toLocaleDateString("pt-BR") : "—"}</td>
+        <td style="padding:5px 8px;border:1px solid #ddd">${t.tag ?? "—"}</td>
+        <td style="padding:5px 8px;border:1px solid #ddd">${t.recurrence === "none" ? "Esporádica" : t.recurrence === "daily" ? "Diária" : t.recurrence === "weekly" ? "Semanal" : "Mensal"}</td>
+      </tr>`).join("")}</tbody>
+    </table>`;
+  }).join("");
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Tarefas — ECON Hub</title>
+    <style>body{font-family:Arial,sans-serif;padding:24px;color:#222}h1{font-size:18px;margin:0 0 4px}p{font-size:12px;color:#666;margin:0 0 16px}@media print{body{padding:12px}}</style>
+  </head><body>
+    <h1>Quadro de Tarefas — ECON Hub</h1>
+    <p>Gerado em ${new Date().toLocaleString("pt-BR")} · ${tasks.length} tarefa(s) total</p>
+    ${rows}
+  </body></html>`;
+
+  const w = window.open("", "_blank");
+  if (!w) return;
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(() => { w.print(); }, 400);
+}
+
+// ── Gráfico de progresso ──────────────────────────────────────────────────────
+
+function KanbanProgress({ tasks }: { tasks: Task[] }) {
+  const total = tasks.length;
+  if (total === 0) return null;
+  const counts = {
+    todo:   tasks.filter((t) => t.column === "todo").length,
+    doing:  tasks.filter((t) => t.column === "doing").length,
+    review: tasks.filter((t) => t.column === "review").length,
+    done:   tasks.filter((t) => t.column === "done").length,
+  };
+  const pct = (n: number) => Math.round((n / total) * 100);
+  const bars: { col: ColumnId; color: string; label: string }[] = [
+    { col: "todo",   color: "bg-zinc-300",   label: "A Fazer" },
+    { col: "doing",  color: "bg-blue-400",   label: "Andamento" },
+    { col: "review", color: "bg-yellow-400", label: "Revisão" },
+    { col: "done",   color: "bg-green-500",  label: "Concluído" },
+  ];
+
+  return (
+    <div className="bg-card border rounded-lg p-3 space-y-2">
+      <div className="flex items-center justify-between flex-wrap gap-x-4 gap-y-1">
+        {bars.map(({ col, color, label }) => (
+          <div key={col} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span className={`w-2.5 h-2.5 rounded-sm ${color}`} />
+            <span className="font-medium">{label}</span>
+            <span className="tabular-nums">{counts[col]}</span>
+            <span className="text-muted-foreground/60">({pct(counts[col])}%)</span>
+          </div>
+        ))}
+        <span className="text-xs text-muted-foreground ml-auto">{total} total</span>
+      </div>
+      {/* Barra empilhada */}
+      <div className="flex h-2 rounded-full overflow-hidden bg-muted">
+        {bars.map(({ col, color }) => counts[col] > 0 && (
+          <div
+            key={col}
+            className={`${color} transition-all`}
+            style={{ width: `${pct(counts[col])}%` }}
+            title={`${counts[col]} ${col}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Página principal ─────────────────────────────────────────────────────────
 
 export default function Tarefas() {
@@ -463,13 +553,13 @@ export default function Tarefas() {
   const [defaultCol, setDefaultCol] = useState<ColumnId>("todo");
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<ColumnId | null>(null);
-  const [navDate, setNavDate] = useState<string | null>(new Date().toISOString().slice(0, 10));
+  const [navDate, setNavDate] = useState<string | null>(todayStr());
 
   function openCreate(col: ColumnId = "todo") { setDefaultCol(col); setDialogTask("new"); }
   function openEdit(task: Task) { setDialogTask(task); }
 
   function shiftDate(delta: number) {
-    const base = navDate ?? new Date().toISOString().slice(0, 10);
+    const base = navDate ?? todayStr();
     const d = new Date(base + "T12:00:00");
     d.setDate(d.getDate() + delta);
     setNavDate(d.toISOString().slice(0, 10));
@@ -494,7 +584,7 @@ export default function Tarefas() {
     setDragId(null); setDragOverCol(null);
   }
 
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayStr();
   const todayCount  = tasks.filter((t) => t.dueDate === today && t.column !== "done").length;
   const overdueCount = tasks.filter((t) => t.dueDate && t.dueDate < today && t.column !== "done").length;
 
@@ -521,10 +611,18 @@ export default function Tarefas() {
             {overdueCount > 0 && <span className="ml-2 text-red-500 font-medium">· {overdueCount} atrasada{overdueCount !== 1 ? "s" : ""}</span>}
           </p>
         </div>
-        <Button onClick={() => openCreate()} className="gap-2">
-          <Plus className="w-4 h-4" /> Nova tarefa
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="gap-1.5 text-xs" onClick={() => printTasks(tasks)}>
+            <Printer className="w-3.5 h-3.5" /> Imprimir
+          </Button>
+          <Button onClick={() => openCreate()} className="gap-2">
+            <Plus className="w-4 h-4" /> Nova tarefa
+          </Button>
+        </div>
       </div>
+
+      {/* Gráfico de progresso */}
+      <KanbanProgress tasks={tasks} />
 
       {/* Navegação diária */}
       <div className="flex items-center gap-2 bg-muted/40 border rounded-lg px-3 py-2 w-fit">

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Bell, CalendarDays, CheckSquare, ExternalLink, FileBarChart2, KanbanSquare, Newspaper, Square } from "lucide-react";
 import { DateWeatherWidget } from "@/components/DateWeatherWidget";
-import { useTaskStore } from "@/store/taskStore";
+import { useTaskStore, todayStr } from "@/store/taskStore";
 import {
   APP_MODULES,
   MODULE_CATEGORIES,
@@ -254,7 +254,7 @@ export default function Dashboard() {
 
 function TarefasDoDia() {
   const { tasks, updateTask } = useTaskStore();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayStr();
   const todayTasks = tasks.filter((t) => t.dueDate === today);
 
   if (todayTasks.length === 0) return null;

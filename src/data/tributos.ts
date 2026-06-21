@@ -70,6 +70,8 @@ export interface Obrigacao {
   tributoIds: TributoId[];
   /** Dia padrão de vencimento. Se variar (decêndio etc.), descreva em `regraVencimento`. */
   dia: number;
+  /** Override do dia de vencimento para meses específicos (ex: mês 7 → dia 31). */
+  diasPorMes?: Record<number, number>;
   /** Meses em que ocorre (1..12). Vazio/undefined = mensal todo mês. */
   mesesEspeciais?: number[];
   /** Se true, NÃO é recorrente mensal — só nos meses em `mesesEspeciais`. */
@@ -582,10 +584,11 @@ const OBR_DIRPF_FIM: Obrigacao = {
 };
 const OBR_DEFIS: Obrigacao = {
   id: "defis", tributoIds: ["das_simples"], dia: 31,
-  mesesEspeciais: [7], apenasNosMesesEspeciais: true,
+  mesesEspeciais: [3], apenasNosMesesEspeciais: true,
   nome: "DEFIS (Simples Nacional)", tipo: "federal", regimes: ["Simples Nacional"],
-  descricao: "Declaração de Informações Socioeconômicas e Fiscais — ano-base anterior.",
-  embasamento: "Resolução CGSN 140/2018, art. 72", fonteDados: ["PGDAS_D"],
+  descricao: "Declaração de Informações Socioeconômicas e Fiscais — ano-base anterior. Prazo legal: 31 de março (art. 72 da Resolução CGSN 140/2018). Verifique se a Receita Federal emitiu prorrogação para o ano vigente.",
+  regraVencimento: "Até 31 de março do ano subsequente (prazo legal). Frequentemente prorrogado por Ato CGSN — confirmar no portal do Simples Nacional.",
+  embasamento: "Resolução CGSN 140/2018, art. 72; LC 123/2006, art. 25", fonteDados: ["PGDAS_D"],
 };
 const OBR_ECF: Obrigacao = {
   id: "ecf", tributoIds: ["irpj", "csll"], dia: 31,
@@ -621,16 +624,19 @@ const OBR_DMED: Obrigacao = {
 // quotas mensais (mín. R$ 1.000, +Selic). Embasamento: art. 5º da Lei 9.430/1996.
 const OBR_IRPJ_TRIM: Obrigacao = {
   id: "irpj_trimestral", tributoIds: ["irpj"], dia: 30,
+  // Mês 1, 7, 10 têm 31 dias → vence no 31; mês 4 (abril) tem 30 dias → vence no 30
+  diasPorMes: { 1: 31, 7: 31, 10: 31 },
   mesesEspeciais: [1, 4, 7, 10], apenasNosMesesEspeciais: true,
   nome: "IRPJ — Apuração Trimestral", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
-  descricao: "Recolhimento do IRPJ apurado no trimestre encerrado em 31/mar (vence abr), 30/jun (vence jul), 30/set (vence out) e 31/dez (vence jan do ano seguinte). Pode ser pago em cota única ou em até 3 quotas mensais (mín. R$ 1.000, acrescidas de Selic). Adicional de 10% sobre lucro trimestral excedente a R$ 60.000.",
-  regraVencimento: "Último dia útil do mês subsequente ao encerramento do trimestre.",
+  descricao: "Recolhimento do IRPJ apurado no trimestre encerrado em 31/mar (vence 30/abr), 30/jun (vence 31/jul), 30/set (vence 31/out) e 31/dez (vence 31/jan). Pode ser pago em cota única ou em até 3 quotas mensais (mín. R$ 1.000, acrescidas de Selic). Adicional de 10% sobre lucro trimestral excedente a R$ 60.000.",
+  regraVencimento: "Último dia útil do mês subsequente ao encerramento do trimestre (abril=30, julho=31, outubro=31, janeiro=31).",
   embasamento: "Lei 9.430/1996, arts. 1º a 5º; RIR/2018, arts. 217 e 856; IN RFB 1.700/2017",
   fonteDados: ["MANUAL", "SCI"],
 };
 const OBR_CSLL_TRIM: Obrigacao = {
   id: "csll_trimestral", tributoIds: ["csll"], dia: 30,
+  diasPorMes: { 1: 31, 7: 31, 10: 31 },
   mesesEspeciais: [1, 4, 7, 10], apenasNosMesesEspeciais: true,
   nome: "CSLL — Apuração Trimestral", tipo: "federal",
   regimes: ["Lucro Presumido", "Lucro Real"],
@@ -664,13 +670,19 @@ const ANUAIS: Obrigacao[] = [
 /** Catálogo plano de todas as obrigações (recorrentes + anuais). */
 export const OBRIGACOES: Obrigacao[] = [...RECORRENTES, ...ANUAIS];
 
+/** Aplica override de dia por mês quando disponível. */
+function aplicarDiaMes(o: Obrigacao, mes: number): Obrigacao {
+  if (o.diasPorMes?.[mes] !== undefined) return { ...o, dia: o.diasPorMes[mes] };
+  return o;
+}
+
 /** Retorna as obrigações que vencem em determinado mês (1..12). */
 export function obrigacoesDoMes(mes: number): Obrigacao[] {
   const recorrentes = RECORRENTES;
   const especiais = ANUAIS.filter(
     (o) => o.mesesEspeciais?.includes(mes) ?? false,
   );
-  return [...recorrentes, ...especiais];
+  return [...recorrentes, ...especiais].map((o) => aplicarDiaMes(o, mes));
 }
 
 /** Mapeia o código de regime do cadastro de clientes para o rótulo usado em Obrigacao.regimes. */
