@@ -14,10 +14,12 @@ export default function AppLayout() {
   const { user, signOut } = useAuth();
   const nav = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [sidebarHovered, setSidebarHovered] = useState(false);
+  const effectivelyCollapsed = sidebarCollapsed && !sidebarHovered;
 
   return (
-    <SidebarContext.Provider value={{ collapsed: sidebarCollapsed, toggle: () => setSidebarCollapsed((v) => !v) }}>
+    <SidebarContext.Provider value={{ collapsed: effectivelyCollapsed, toggle: () => setSidebarCollapsed((v) => !v) }}>
     <div className="min-h-screen bg-background flex flex-col">
       {/* Topbar preta — full width */}
       <header
@@ -88,12 +90,14 @@ export default function AppLayout() {
       <div className="flex flex-1 min-h-0">
         {/* Sidebar amarela - desktop */}
         <aside
-          className={`hidden md:flex ${sidebarCollapsed ? "w-16" : "w-60"} flex-col shrink-0 border-r transition-all duration-200`}
+          className={`hidden md:flex ${effectivelyCollapsed ? "w-16" : "w-60"} flex-col shrink-0 border-r transition-all duration-200`}
           style={{
             background: "hsl(var(--sidebar-background))",
             color: "hsl(var(--sidebar-foreground))",
             borderColor: "hsl(var(--sidebar-border))",
           }}
+          onMouseEnter={() => setSidebarHovered(true)}
+          onMouseLeave={() => setSidebarHovered(false)}
         >
           <Suspense
             fallback={

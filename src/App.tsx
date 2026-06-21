@@ -40,6 +40,7 @@ const PainelAlertas = lazy(() => import("./pages/PainelAlertas"));
 const DRESimplificada = lazy(() => import("./pages/DRESimplificada"));
 const Noticias = lazy(() => import("./pages/Noticias"));
 const MapeamentoTributario = lazy(() => import("./pages/MapeamentoTributario"));
+const Tarefas = lazy(() => import("./pages/Tarefas"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const ROUTE_PREFETCH: Record<string, () => Promise<unknown>> = {
@@ -141,6 +142,7 @@ const App = () => (
                   <Route path="noticias" element={<Noticias />} />
                   <Route path="mapeamento-tributario" element={<Navigate to="/app/reforma-tributaria" replace />} />
                   <Route path="clientes/:id/dashboard" element={<ClienteDashboard />} />
+                  <Route path="tarefas" element={<Tarefas />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -19,6 +19,7 @@ import {
   TrendingUp,
   Newspaper,
   FileCode,
+  KanbanSquare,
   type LucideIcon,
 } from "lucide-react";
 import imgDashboard from "@/assets/mod-dashboard.svg";
@@ -303,6 +304,16 @@ export const APP_MODULES: AppModule[] = [
     category: "Geral",
     status: "active",
     image: imgIntegracoes,
+  },
+  {
+    id: "tarefas",
+    label: "Tarefas",
+    description: "Quadro Kanban para gestão de tarefas do escritório.",
+    to: "/app/tarefas",
+    icon: KanbanSquare,
+    category: "Geral",
+    status: "active",
+    image: imgDashboard,
   },
 ];
 
